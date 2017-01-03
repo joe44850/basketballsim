@@ -5,21 +5,24 @@ Court.prototype = {
   init : function(){
     this.getDimensions();
     this.getBasket();
+    this.jCourt = $(document.getElementById("court"));
+    this.oCourt = document.getElementById("court");
   },
   
   getDimensions : function(){
-    this.floorStartX = $("#floor").offset().left;    
-    this.floorStart = $("#floor").offset().top;
+    this.floorStartX = $("#floor").position().left;    
+    this.floorStart = $("#floor").position().top;
     this.floorHeight = $("#floor").height() + this.floorStart;
-    this.floorWidth = $("#floor").width();     
+    this.floorWidth = $("#floor").width();  
+    this.floorHalf = this.floorWidth/2;   
   },
   
   getBasket : function(){
     this.topAdjust = 45;
     this.leftAdjust = 35;
     //where is the backboard?
-    this.backboardLeft = $("#backboard").offset().left;
-    this.backboardTop = $("#backboard").offset().top;   
+    this.backboardLeft = $("#backboard").position().left;
+    this.backboardTop = $("#backboard").position().top;   
     this.basketCenterLeft = this.backboardLeft + this.leftAdjust;
     this.basketCenterTop = this.backboardTop + this.topAdjust;    
   },

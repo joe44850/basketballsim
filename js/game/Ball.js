@@ -4,23 +4,23 @@ Ball.prototype = {
   
   inbound : function(){
     //change this later, get random number
-    //this._fixedInbound();
-    this._randomInbout();
+    //this._randomInbound();
+    this._fixedInbound();
     this.createBall();
   },
 
-  _randomInbout : function(){
+  _randomInbound : function(){
     this.xStart = Court.floorStartX-10;
     this.yStart = random(Court.floorStart, Court.floorHeight);    
-    this.yTo = random(Court.floorStart, Court.floorHeight);
-    this.xTo = random(this.xStart, Court.floorWidth);
+    this.yTo = random(Court.floorStart, 200);
+    this.xTo = random(this.xStart, 720);
   },
 
   _fixedInbound : function(){
-    this.xStart = Court.floorStartX-10;
+    this.xStart = -10;
     this.yStart = random(Court.floorStart, Court.floorHeight);
-    this.yTo = Court.floorStart + 50;
-    this.xTo = this.xStart + 50;
+    this.yTo = Court.floorStart-10;
+    this.xTo = random(1, 274);
   },
   
   pass : function(){
@@ -78,7 +78,7 @@ Ball.prototype = {
     this.oBall.id="ball";    
     shadowTo = Ball.yTo+30;
     this.createBallShadow();
-    document.body.appendChild(this.oBall);
+    Court.oCourt.appendChild(this.oBall);
     speed = random(400,700);
     $(Ball.oBallS).animate({"left":Ball.xTo+"px", "top":shadowTo+"px"}, speed);
     $(Ball.oBall).animate({"left":Ball.xTo+"px","top":Ball.yTo+"px"}, speed, function(){      
@@ -102,7 +102,7 @@ Ball.prototype = {
     this.oBallS.style.left=this.xStart+"px";
     this.oBallS.style.top=this.yStart+"px";
     this.oBallS.id="ball-shadow";
-    document.body.appendChild(this.oBallS);
+    Court.oCourt.appendChild(this.oBallS);
   },
   
   placeAndShoot : function(){
