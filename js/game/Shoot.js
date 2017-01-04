@@ -92,133 +92,35 @@ Shoot.prototype = {
     },
 
     shotIsGood: function(){
-      this.showMake = true;
+      this.showMake = true;      
       x_from = $(Ball.oBall).position().left;
       y_from = $(Ball.oBall).position().top;
+      this.distance = this.setDistance(x_from);
       
       angle = this.getAngle1(x_from);
       length = this.getLength(x_from);
-      return [angle1, .5, 73, .4];
+      length2 = 1 - length;
+      //return[290, 1.5, 75, 0.4];
+      return [angle, length, 75, length2];
 
-      if(this.x_from <= 10){
-        l = random(.6, .9);              
-        return [290, l, 73, .4];
-      }     
-      if(this.x_from <= 50){
-        return [280, .6, 88, .4];
-      }
-      else if(this.x_from <= 150){
-        return [280, random(.4,.8), 100, .4];
-      }
-      else if(this.x_from <= 200){
-        return [280, random(.4,1.2), 100, .5];
-      }
-      else if(this.x_from <= 250){        
-        this.x_to -= 13;
-        return [280, random(.8,1.5), 110, .8];
-      }
-      else if(this.x_from <= 300){        
-        this.x_to -= 13;
-        return [300, random(1.5,3), 110, 1];
-      }
-      else if(this.x_from <= 350){        
-        this.x_to -= 13;
-        this.showMake = false;
-        return [320, random(4,6), 110, .3];
-      }
-      else if(this.x_from <= 370){        
-        this.x_to -= 15;
-        this.showMake = false;
-        return [0, random(8,16), 110, .3];
-      }
-      else if(this.x_from <= 390){        
-        this.x_to -= 17;
-        this.showMake = false;
-        return [40, random(6,10), 40, .3];
-      }
-      else if(this.x_from <= 420){        
-        this.x_to -= 30;
-        this.newLeft = 5;  
-        this.showMake = true;      
-        l = random(4,5);        
-        return [55, l, 40, 1];
-      }
-      else if(this.x_from <= 440){        
-        this.x_to -= 57;
-        this.newLeft = 5;  
-        this.showMake = true;      
-        l = random(2.1, 3); 
-        console.log(l);       
-        return [60, l, 40, 1];
-      }
-      else if(this.x_from <= 460){        
-        this.x_to -= 65;
-        this.newLeft = 0;  
-        this.showMake = true;      
-        l = random(2.6, 2.8); 
-        console.log(l);       
-        return [60, l, 40, 1];
-      }
-      else if(this.x_from <= 480){        
-        this.x_to -= 90;
-        this.newLeft = -5;  
-        this.showMake = true;      
-        l = random(2.1, 2.3); 
-        console.log(l);       
-        return [60, l, 40, 1];
-      }
-      else if(this.x_from <= 500){        
-        this.x_to -= 16;
-        this.newLeft = -5;  
-        this.showMake = true;      
-        l = random(1.7, 2.1); 
-        console.log(l);       
-        return [60, l, 240, .4];
-      }
-      else if(this.x_from <= 550){        
-        this.x_to -= 16;
-        this.newLeft = -5;  
-        this.showMake = true;      
-        l = random(1.3, 1.8); 
-        console.log(l);       
-        return [60, l, 247, .4];
-      }
-      else if(this.x_from <= 600){        
-        this.x_to -= 16;
-        this.newLeft = -5;  
-        this.showMake = true;      
-        l = random(.9, 1.5); 
-        console.log(l);       
-        return [60, l, 247, .4];
-      }
-      else if(this.x_from <= 650){        
-        this.x_to -= 16;
-        this.newLeft = -5;  
-        this.showMake = true;      
-        l = random(.7, 1.3); 
-        console.log(l);       
-        return [60, l, 247, .4];
-      }
-      else if(this.x_from <= 700){        
-        this.x_to -= 14;
-        this.newLeft = -5;  
-        this.showMake = true;      
-        l = random(.5, 1.1); 
-        console.log(l);       
-        return [60, l, 247, .4];
-      }
-      return [280, .6, 88, .4];
+      
     },
 
     getAngle1: function(x_from){
       if(x_from <= 374){
         range_ratio = 5.342;
-        return Math.round(x_from/5.342+290);
+        return Math.round((x_from/5.342)+260);
       }
     },
 
-    getLength: function(x_from){
+    getLength: function(x_from){      
+      len = (374/this.distance)*.75;
+      console.log(len);
+      return len;
+    },
 
+    setDistance(x_from){
+      return Math.abs(x_from - 374); 
     },
 
     getAngle2: function(){

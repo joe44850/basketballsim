@@ -20,7 +20,7 @@ Ball.prototype = {
     this.xStart = -10;
     this.yStart = random(Court.floorStart, Court.floorHeight);
     this.yTo = Court.floorStart-10;
-    this.xTo = random(1, 274);
+    this.xTo = 200;
   },
   
   pass : function(){
