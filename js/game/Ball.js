@@ -1,6 +1,8 @@
 var Ball = function(){};
 
 Ball.prototype = {
+
+  square : null,
   
   inbound : function(){
     //change this later, get random number
@@ -17,10 +19,12 @@ Ball.prototype = {
   },
 
   _fixedInbound : function(){
-    this.xStart = -10;
+    var square = 13;
+    this.xStart = -10;    
     this.yStart = random(Court.floorStart, Court.floorHeight);
-    this.yTo = Court.floorStart-10;
-    this.xTo = 200;
+    this.square = grid[square];
+    this.yTo = this.square.y + Court.floorStart;
+    this.xTo = this.square.x;
   },
   
   pass : function(){
@@ -29,7 +33,7 @@ Ball.prototype = {
   
   shoot : function(){
     Ball.stopDribble();    
-    Shot = new Shoot();
+    Shot = new Shoot(this.square);
     Shot.attempt();
     //put ball in shot position    
   },  

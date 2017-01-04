@@ -1,0 +1,27 @@
+var grid = {
+    0:{"x" : 30, y: 30, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.25, "val":3, "showMake":true, "xAdj":10},
+    1:{"x" : 60, y: 30, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.2, "val":3, "showMake":true, "xAdj":10},
+    2:{"x" : 90, y: 30, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    3:{"x" : 120, y: 30, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    4:{"x" : 150, y: 30, "angle1":320, "angle2":75, "range1":[.9, 1.1], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    5:{"x" : 180, y: 30, "angle1":300, "angle2":75, "range1":[.9, 1.1], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    6:{"x" : 210, y: 30, "angle1":300, "angle2":75, "range1":[1.1, 1.2], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    7:{"x" : 240, y: 30, "angle1":300, "angle2":75, "range1":[1.1, 1.2], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    8:{"x" : 270, y: 30, "angle1":280, "angle2":75, "range1":[1.3, 1.5], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    9:{"x" : 300, y: 30, "angle1":280, "angle2":75, "range1":[1.5, 1.7], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    10:{"x" : 330, y: 30, "angle1":270, "angle2":75, "range1":[1.8, 2], "range2":.2, "val":2, "showMake":true, "xAdj":10},
+    11:{"x" : 360, y: 30, "angle1":244, "angle2":75, "range1":[3.8, 5], "range2":.2, "val":2, "showMake":false, "xAdj":10},
+    12:{"x" : 390, y: 30, "angle1":70, "angle2":280, "range1":[1.2,1.4], "range2":.2, "val":2, "showMake":false, "xAdj":-48},
+    13:{"x" : 420, y: 30, "angle1":70, "angle2":280, "range1":[1.7,1.7], "range2":.2, "val":2, "showMake":true, "xAdj":-30},
+    14:{"x" : 450, y: 30, "angle1":60, "angle2":300, "range1":[1.1,1.15], "range2":.2, "val":2, "showMake":true, "xAdj":-50},
+    15:{"x" : 480, y: 30, "angle1":60, "angle2":300, "range1":[1.1,1.15], "range2":.2, "val":2, "showMake":true, "xAdj":-50},
+    16:{"x" : 510, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.15], "range2":.2, "val":2, "showMake":true, "xAdj":-50},
+    17:{"x" : 540, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.15], "range2":.2, "val":2, "showMake":true, "xAdj":-50},
+    18:{"x" : 570, y: 30, "angle1":50, "angle2":320, "range1":[1.02,1.02], "range2":.2, "val":2, "showMake":true, "xAdj":-60},
+    19:{"x" : 600, y: 30, "angle1":50, "angle2":320, "range1":[1.05,1.05], "range2":.2, "val":2, "showMake":true, "xAdj":-60},
+    20:{"x" : 630, y: 30, "angle1":50, "angle2":320, "range1":[1.05,1.05], "range2":.2, "val":2, "showMake":true, "xAdj":-60},
+    21:{"x" : 660, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.1], "range2":.2, "val":2, "showMake":true, "xAdj":-60},
+    22:{"x" : 690, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.1], "range2":.2, "val":2, "showMake":true, "xAdj":-60},
+    23:{"x" : 710, y: 30, "angle1":50, "angle2":320, "range1":[.9,1.1], "range2":.2, "val":2, "showMake":true, "xAdj":-60}
+}
+

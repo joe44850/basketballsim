@@ -11,7 +11,8 @@
         {"file": "js/engine/BasketballSim.js", "type":"js"},                
         {"file": "css/style.css", "type":"css"},
         {"file": "css/court.css", "type":"css"},
-        {"file": "js/game/Shoot.js", "type" : "js"}
+        {"file": "js/game/Shoot.js", "type" : "js"},
+        {"file": "js/game/Grid.js", "type" : "js"}
     ]
 }
 

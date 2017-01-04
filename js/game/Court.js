@@ -11,7 +11,7 @@ Court.prototype = {
   
   getDimensions : function(){
     this.floorStartX = $("#floor").position().left;    
-    this.floorStart = $("#floor").position().top;
+    this.floorStart = $("#floor").offset().top-50;    
     this.floorHeight = $("#floor").height() + this.floorStart;
     this.floorWidth = $("#floor").width();  
     this.floorHalf = this.floorWidth/2;   
@@ -35,6 +35,17 @@ Court.prototype = {
      '-o-transform':'rotate(88deg)',
      '-ms-transform':'rotate(88deg)',
      'transform':'rotate(88deg)'
+    });  
+  },
+
+  moveNetLeft : function(){
+    Court.putback = -2;
+    $('#net-bottom').css({
+     '-moz-transform':'rotate(300deg)',
+     '-webkit-transform':'rotate(300deg)',
+     '-o-transform':'rotate(300deg)',
+     '-ms-transform':'rotate(300deg)',
+     'transform':'rotate(300deg)'
     });  
   },
   
