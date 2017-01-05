@@ -17,9 +17,11 @@ Ball.prototype = {
     this.yTo = random(Court.floorStart, 200);
     this.xTo = random(this.xStart, 720);
   },
+  count : 35,
 
   _fixedInbound : function(){
-    var square = 13;
+    this.count++;
+    var square = 83;
     this.xStart = -10;    
     this.yStart = random(Court.floorStart, Court.floorHeight);
     this.square = grid[square];
