@@ -2,26 +2,28 @@ var Ball = function(){};
 
 Ball.prototype = {
 
-  square : null,
+  square : null, 
   
   inbound : function(){
     //change this later, get random number
     //this._randomInbound();
-    this._fixedInbound();
+    this._randomInbound();
     this.createBall();
   },
 
   _randomInbound : function(){
-    this.xStart = Court.floorStartX-10;
-    this.yStart = random(Court.floorStart, Court.floorHeight);    
-    this.yTo = random(Court.floorStart, 200);
-    this.xTo = random(this.xStart, 720);
+    var square = random(1,167);
+    this.xStart = -10;    
+    this.yStart = random(Court.floorStart, Court.floorHeight);
+    this.square = grid[square];
+    this.yTo = this.square.y + Court.floorStart;
+    this.xTo = this.square.x;
   },
   count : 35,
 
   _fixedInbound : function(){
-    this.count++;
-    var square = 83;
+    
+    var square = random(1,167);
     this.xStart = -10;    
     this.yStart = random(Court.floorStart, Court.floorHeight);
     this.square = grid[square];
@@ -29,7 +31,29 @@ Ball.prototype = {
     this.xTo = this.square.x;
   },
   
-  pass : function(){
+  pass : function(callBack){
+    /* random pass for now */
+    this.stopDribble();
+    self = this;
+    shadowTo = Ball.yTo+30;
+    $(Ball.oBallS).animate({"left":Ball.xTo+"px", "top":shadowTo+"px"}, speed);
+    $(Ball.oBall).animate({"left":Ball.xTo+"px","top":Ball.yTo+"px"}, speed, function(){      
+      var n = random(1,167);
+      var passToSquare = grid[n];
+      self.square = passToSquare;      
+      var xTo = passToSquare.x;
+      var yTo = passToSquare.y + Court.floorStart;
+      shadowTo = yTo + 30;
+      console.log("Shadowy: "+shadowTo);
+      console.log("Bally: "+Ball.yTo);
+      speed = random(400,700);
+      $(Ball.oBallS).animate({"left":xTo+"px", "top":shadowTo+"px"}, speed);
+      $(Ball.oBall).animate({"left":xTo+"px","top":yTo+"px"}, speed, function(){      
+        Ball.xTo = xTo;
+        Ball.yTo = yTo;
+        if(callBack){ callBack();}
+      });
+    });
     
   },
   
@@ -44,6 +68,9 @@ Ball.prototype = {
     if(!this.oBall){      
       this.inbound(Ball.Dribble);
     }
+    var sound = new Audio();
+    n = random(1,3);
+    sound.src = "/assets/sounds/bounce-"+n+".mp3";
     
     currentY = Ball.yTo;
     toY = currentY+20;
@@ -52,11 +79,13 @@ Ball.prototype = {
     oBall.animate().stop();
     jBallS.animate().stop();
     //Ball.oBallS.style.opacity = ".1";
-    jBallS.animate({"opacity":".5","width":"31px"}, 200, function(){
-      jBallS.animate({"opacity":".1","width:":"40px"}, 200);
+    speed = random(50,300);
+    jBallS.animate({"opacity":".5","width":"31px"}, speed, function(){
+      jBallS.animate({"opacity":".1","width:":"40px"}, speed);
     });
-    oBall.animate({"top":toY+"px"}, 200, 'easeInQuad', function(){       
-      oBall.animate({"top":currentY+"px"}, 200, 'easeOutQuad', function(){         
+    oBall.animate({"top":toY+"px"}, speed, 'easeInQuad', function(){   
+      sound.play();    
+      oBall.animate({"top":currentY+"px"}, speed, 'easeOutQuad', function(){         
         if(Ball.stopDribbling){          
           if(Ball.shootBall){ Ball.shotAttempt();}
           return;

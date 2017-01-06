@@ -7,26 +7,31 @@ Shoot.prototype = {
   showMake : true,
   soundEffect : null,
   
-  attempt : function(){
+  attempt : function(callback){
+    this.net = "#rim-center";
     this.shotFromX = $(Ball.oBall).offset().left;
     this.shotFromY = $(Ball.oBall).offset().top;
     this.shotToX = Court.BasketCenterLeft;
     this.shotToY = Court.BasketCenterTop;
-    this.newLeft = (this.square.x>374) ? -25 : 25;
-    this.shotAttempt();
+    this.setDistance(this.shotFromX);  
+    this.good = true;
+    if(this.good){
+      this.makeShotAnimation(callback);
+    }      
   },
 
-  shotAttempt : function(){
-       
+  makeShotAnimation : function(callback){
       var net = "#rim-center";
       oBall = $(Ball.oBall);
-      this.good = true;
+      
       if(this.good){ this.soundEffect = "/assets/sounds/swish1.mp3";}
       //setup collision animation:
       var hashit = false;
       var hitcount = 0;
       var self = this;
-      
+      var tail = self.square.tail;
+      var duration = (this.square.val==3) ? 2500 : 1800;
+
       yTo = Ball.yTo-50; 
       arc_array = this.getShotArc();
       oBall.animate({"top":yTo+"px"}, function(){     
@@ -59,16 +64,16 @@ Shoot.prototype = {
               var collides = oBall.overlaps(net);
               if(hitcount==13 && self.showMake){               
                 oBall.stop();
-                newleft = oBall.position().left+self.newLeft;
+                newleft = oBall.position().left+tail;
                 oBall.animate({"top":"160px","left":newleft+"px","opacity":0},300);
                 Court.moveNetBack();
                 var sound = new Audio();
                 sound.src = self.soundEffect;
                 sound.play();
               }
-              else if(hitcount==40){
+              else if(hitcount==20){
                  oBall.stop();
-                 newleft = oBall.position().left+self.newLeft;
+                 newleft = oBall.position().left+tail;
                  oBall.animate({"top":"160px","left":newleft+"px","opacity":0},300);
                  Court.moveNetBack();
                  var sound = new Audio();
@@ -78,9 +83,13 @@ Shoot.prototype = {
             }
           },
           easing:'swing',
-          duration:1800,
+          duration:duration,
           complete: function(){          
-            if(hashit){ Court.moveNetBack();}     
+            if(hashit){ Court.moveNetBack();}
+            if(callback){
+              callback(true);
+            }
+            return true;     
           }
         });
         //oBall.animate({"top":y+"px","left":x+"px"});
@@ -118,9 +127,6 @@ Shoot.prototype = {
       angle2 = this.square.angle2;
       length = random(this.square.range1[0], this.square.range1[1]);
       length2 = this.square.range2;
-      //return[290, 1.5, 75, 0.4];
-      
-      this.updateMessage("Angle1:"+angle+" Length1:"+length+" Angle2:"+angle2+" Length2:"+length2+" ");
       return [angle, length, 75, length2];
     },
 
@@ -133,24 +139,19 @@ Shoot.prototype = {
       }
     },
 
-    getLength: function(x_from){      
-      len = ((374/this.distance)*.75).toFixed(2);
-      console.log(len);
-      return len;
-    },
-
     setDistance: function(x_from){
-      return Math.abs(x_from - 374); 
+      this.distance =  Math.abs(x_from - 374); 
+      return this.distance;
     },
 
-    getAdjustment: function(angle, x_from){
-      /* the lower the distance, the greater adjustment we must make to the angle */
-      adjustment = 348 - angle - 20;
-      return adjustment;
+    getDistance(){
+      return this.distance;
     },
 
     getAngle2: function(){
       /* distance = x */
     }
 }
+
+
   
