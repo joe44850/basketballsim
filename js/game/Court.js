@@ -1,12 +1,20 @@
 Court = function(){};
 
 Court.prototype = {
+
+  hasRun : false,
   
-  init : function(){
-    this.getDimensions();
-    this.getBasket();
-    this.jCourt = $(document.getElementById("court"));
-    this.oCourt = document.getElementById("court");
+  init : function(){    
+      this.getDimensions();
+      this.getBasket();
+      this.jCourt = $(document.getElementById("court"));
+      this.oCourt = document.getElementById("court"); 
+      return new Promise(function(resolve, reject){     
+      if(this.createZoneMatrix()){
+          return resolve(true);
+        }
+      }.bind(this));
+    
   },
   
   getDimensions : function(){
@@ -58,6 +66,27 @@ Court.prototype = {
      '-ms-transform':'rotate('+n+'deg)',
      'transform':'rotate('+n+'deg)'
     });  
+  },
+
+  createZoneMatrix: function(){ 
+    return new Promise(function(resolve, reject){
+      for(var key in zones){
+        zone = zones[key];
+        min_x = zone.x[0] - 1;
+        max_x = zone.x[1] - 1;
+        min_y = zone.y[0] - 1;
+        max_y = zone.y[1] - 1;
+        var sql = "select id from shotGrid where (x > "+min_x+" && x < "+max_x+" && y > "+min_y+" && y < "+max_y+")";
+        res = jsonsql.query(sql, shotGrid);      
+        for(var res_key in res){
+          zones[key]["squares"].push(res[res_key].id);
+        }
+      }
+      if(this.hasRun){ resolve(true);}
+      else{ reject(false);}
+      this.hasRun = true;      
+    });  
+    
   }
   
 };

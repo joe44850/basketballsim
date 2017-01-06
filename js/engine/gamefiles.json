@@ -5,6 +5,7 @@
         {"file": "js/engine/jquery.path.js", "type":"js"},
         {"file": "js/engine/jquery.easing.1.3.js", "type" : "js"},
         {"file": "js/engine/jquery.overlaps.js", "type" : "js"},
+        {"file": "js/engine/jsonsql-0.1.js", "type": "js"},
         {"file": "js/game/Court.js", "type" : "js"},
         {"file": "js/game/Ball.js", "type" : "js"},
         {"file": "js/game/Match.js", "type":"js"},
@@ -12,7 +13,8 @@
         {"file": "css/style.css", "type":"css"},
         {"file": "css/court.css", "type":"css"},
         {"file": "js/game/Shoot.js", "type" : "js"},
-        {"file": "js/game/Grid.js", "type" : "js"}
+        {"file": "js/game/Data.js", "type" : "js"},
+        {"file": "js/game/Team.js", "type": "js"}
     ]
 }
 
