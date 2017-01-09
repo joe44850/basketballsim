@@ -9,6 +9,7 @@ Court.prototype = {
       this.getBasket();
       this.jCourt = $(document.getElementById("court"));
       this.oCourt = document.getElementById("court"); 
+      Scoreboard.create();
       return new Promise(function(resolve, reject){     
       if(this.createZoneMatrix()){
           return resolve(true);

@@ -17,7 +17,9 @@
         {"file": "js/game/Shoot.js", "type" : "js"},
         {"file": "js/game/Data.js", "type" : "js"},
         {"file": "js/game/Team.js", "type": "js"},
-        {"file": "js/game/Play.js", "type": "js"}
+        {"file": "js/game/Rebound.js", "type": "js"},
+        {"file": "js/game/Play.js", "type": "js"},
+        {"file": "js/game/Scoreboard.js", "type": "js"}
     ]
 }
 

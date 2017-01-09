@@ -1,3 +1,8 @@
+@font-face{
+    font-family:'digital-clock';
+    src:url('fonts/digital-7.ttf');
+}
+
 #court{
     font-family:verdana;    
     height:80%;
@@ -83,5 +88,31 @@
 }
 #match_play{
     
+}
+
+#scoreboard {
+    position:absolute;
+    width:700px;
+    top:10px;
+    height:100px;
+}
+#scoreboard span {
+    display:table-cell;
+}
+
+.team-score-name{
+    font-size:30px;
+    font-family:sans-serif;
+    width:200px;
+    max-width:200px;
+    overflow:hidden;
+}
+
+.digital-score {    
+    font-family:'digital-clock';
+    font-size:38px;
+    color:#52FF40;
+    text-align:right; 
+    width:75px;   
 }
 

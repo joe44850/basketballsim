@@ -24,6 +24,7 @@ Match.prototype = {
   },
 
   createPossession: function(){
+    Ball.destroy();
     Team.createPlayers().then(()=>{return Play.startPossession()});
 
   } 

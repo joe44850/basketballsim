@@ -6,8 +6,13 @@ Shoot.prototype = {
 
   showMake : true,
   soundEffect : null,
+  callBack: null,
+  scorevalue: 0,
+  player: null,
   
-  attempt : function(square){
+  attempt : function(square, player, callBack){
+      this.player = player;
+      this.callBack = callBack;      
       Ball.stopDribble();
       Ball.freeBallFromPlayer();  
       setTimeout(()=>{
@@ -17,13 +22,71 @@ Shoot.prototype = {
         this.shotFromY = $(Ball.oBall).position().top;        
         this.shotToX = Court.BasketCenterLeft;
         this.shotToY = Court.BasketCenterTop;
-        this.setDistance(this.shotFromX);  
+        this.setDistance(this.shotFromX);         
         this.good = true;
-        if(this.good){
+        if(this.makeShot()){
           this.makeShotAnimation();
+        }
+        else{
+          this.missShotAnimation();
         }
       },200);     
             
+  },
+
+  makeShot: function(){
+    pct = (this.square.val == 3) ? this.player.three_pct : this.player.sht_pct;
+    n = random(0,100);
+    if(n <= pct){
+      this.scorevalue = this.square.val;
+      return true;
+    }
+    else{
+      this.scorevalue = 0;
+      return false;
+    }
+  },
+
+  missShotAnimation: function(){
+    var net = "#rim-center";
+        jBall = $(Ball.oBall);
+        
+        if(this.good){ this.soundEffect = "/assets/sounds/swish1.mp3";}
+        //setup collision animation:
+        var hashit = false;
+        var hitcount = 0;
+        var self = this;
+        var tail = self.square.tail;
+        var duration = (this.square.val==3) ? 2500 : 1800;
+        
+        arc_array = this.getShotArc();
+        yTo = this.shotFromY-50;
+        xTo = arc_array['x_to'] + random(10,20);
+       
+        jBall.animate({"top":yTo+"px"}, function(){
+          var params = {
+            start:{
+              x : arc_array['x_from'], 
+              y : arc_array['y_from'], 
+              angle : arc_array['angle1'], 
+              length: arc_array['length1']},
+            end:{
+              x : xTo, 
+              y : arc_array['y_to'], 
+              angle : arc_array['angle2'],           
+              length: arc_array['length2']}
+          };             
+          jBall.animate({path : new $.path.bezier(params)},{            
+            easing:'swing',
+            duration:duration,
+            complete: function(){
+              debug("Should rebound now", true);
+              Rebound.get(self.callBack);                      
+            }
+          });
+          //oBall.animate({"top":y+"px","left":x+"px"});
+        });
+
   },
 
   makeShotAnimation : function(){
@@ -52,8 +115,7 @@ Shoot.prototype = {
               y : arc_array['y_to'], 
               angle : arc_array['angle2'],           
               length: arc_array['length2']}
-          };   
-          console.log(params);      
+          };             
           jBall.animate({path : new $.path.bezier(params)},{
             step:function(now,fx){ 
               
@@ -76,7 +138,16 @@ Shoot.prototype = {
                   Court.moveNetBack();
                   var sound = new Audio();
                   sound.src = self.soundEffect;
-                  sound.play();
+                  sound.play();  
+                  Scoreboard.update(self.scorevalue, Team.teamOnOffense.id);
+                  setTimeout(()=>{
+                    n = (Team.teamOnOffense.id != 1) ? 1 : 0;            
+                    Team.setTeamOnOffense(n); 
+                    if(self.callBack){
+                        self.callBack();
+                    }                                
+                  },1000);
+                                   
                 }
                 else if(hitcount==20){
                   jBall.stop();
@@ -86,14 +157,20 @@ Shoot.prototype = {
                   var sound = new Audio();
                   sound.src = self.soundEffect;
                   sound.play();
+                  Scoreboard.update(self.scorevalue, Team.teamOnOffense.id);
+                  setTimeout(()=>{
+                    n = (Team.teamOnOffense.id != 1) ? 1 : 0;            
+                    Team.setTeamOnOffense(n);                                 
+                    self.callBack();
+                  },1000);                  
                 }
               }
             },
             easing:'swing',
             duration:duration,
             complete: function(){          
-              if(hashit){ Court.moveNetBack();}
-                   
+              if(hashit){ Court.moveNetBack();}         
+             
             }
           });
           //oBall.animate({"top":y+"px","left":x+"px"});

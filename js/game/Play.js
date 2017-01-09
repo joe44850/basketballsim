@@ -4,6 +4,8 @@ Play.prototype = {
 
     playerWithBall: null,
     haltAction : false,
+    playSequence: [],
+    currentAction: null,
 
     startPossession:function(){
         return new Promise(function(resolve){
@@ -15,7 +17,14 @@ Play.prototype = {
     },
 
     dispatch: function(){
-        debug("Done setting players", true);
+        /* decided what to do */
+        var callBack = (function(val){  
+            setTimeout(()=>{
+                Team.createPlayers();
+                this.startPossession(); 
+            });      
+        }).bind(this);
+        this.playerMovesAndShoots(callBack);
     },
 
     run: function(){
@@ -47,10 +56,11 @@ Play.prototype = {
     /* this is not a pass, this is if the ref hands the player a ball,
     or during the initial team setup on offense begins */
     givePlayerBall: function(player){         
-        this.playerWithBall = player.id;
+        this.playerWithBall = player;
         this.playerWithBallSquare = Team.playerSquares[player.id];        
         this.liveSquare = player.onGrid;    
-        Ball.create(this.playerWithBallSquare);        
+        Ball.create(this.playerWithBallSquare); 
+        Ball.startDribble();               
     },
 
     playerMoves: function(playerSquare, goTo, callBack){
@@ -60,13 +70,18 @@ Play.prototype = {
         $(playerSquare).animate({
             "left":xTo+"px",
             "top":yTo+"px"
-        },speed, function(){
-            if(callBack){ callBack();}
+        },
+        {
+            duration: speed, 
+            queue: false,           
+            complete: function(){
+                if(callBack){ callBack();}
+            }
         });
     },
 
-    playerMovesAndShoots(){
-        speed = random(1000, 2000);
+    playerMovesAndShoots(callBack){
+        speed = random(1000,2000);
         goToSquare = courtGrid[random(1,167)];
         xTo = goToSquare.x;
         yTo = (goToSquare.y + Court.floorStart);
@@ -78,12 +93,13 @@ Play.prototype = {
             self.liveSquare = goToSquare;
             self.haltAction=true;
             Ball.stopDribble();            
-            Shoot.attempt(self.liveSquare);            
+            Shoot.attempt(self.liveSquare, self.playerWithBall, callBack);            
         }); 
     },
 
     /* main offense actions */
-    pass: function(){
+    pass: function(callBack){
+        var t = random(1,3)*1000;
         Ball.stopDribble();
         Ball.freeBallFromPlayer();
         var num = random(0,4);
@@ -94,14 +110,12 @@ Play.prototype = {
         $(Ball.oBall).animate({
             "left":x_to+"px",
             "top":y_to+"px"
-        }, function(){
-            console.log(Play.liveSquare);            
+        }, function(){                  
             Play.liveSquare = player.onGrid;
             Ball.startDribble();
             setTimeout(()=>{
-                Ball.stopDribble();
-                Shoot.attempt(Play.liveSquare);
-            },5000);
+                callBack();
+            },t);
             
         });
     },

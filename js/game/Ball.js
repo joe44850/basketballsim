@@ -4,6 +4,8 @@ Ball.prototype = {
   
   rotation: 0,
   dribbleState: "off",
+  oBall: null,
+  oBallS: null,
 
   dribble : function(stop){  
     if(this.dribbleState == "off"){ return;}
@@ -17,39 +19,31 @@ Ball.prototype = {
     toY = currentY+20;        
     jBallS = $(Ball.oBallS); 
     var self = this;
-    //Ball.oBallS.style.opacity = ".1";
-    degree = 20*(random(1,3));
-    speed = random(100,300);
+    //Ball.oBallS.style.opacity = ".1";    
+    speed = random(50,200);
+    speedup = (speed/3).toFixed(0);
     
-    jBallS.animate({"opacity":".8", "queue":false}, speed, 'easeInQuad', function(){
-      jBallS.animate({"opacity":".1", "queue":false}, speed, 'easeOutQuad');
+    jBallS.stop(true, false).animate({"opacity":".8", "queue":false}, speed, 'easeInQuad', function(){
+      jBallS.animate({"opacity":".1", "queue":false}, speedup, 'easeOutQuad');
     });
-    oBall.animate({"top":toY+"px", "queue":false}, speed, 'easeInQuad', function(){           
+    oBall.stop(true, false).animate({"top":toY+"px", "queue":false}, speed, 'easeInQuad', function(){           
       //oBall.css({transform: 'rotate('+ self.rotate +'deg)'});  
       sound.play();    
-      oBall.animate({"top":currentY+"px", "queue":false}, speed, 'easeOutQuad', function(){ 
-          if(stop){
-            self.rotation = 0;
-            oBall.animate().stop();
-            Play.dispatch();            
-          }  
-          else{
-            self.dribble();
-          }
+    oBall.animate({"top":currentY+"px", "queue":false}, speedup, 'easeOutQuad', function(){ 
+          self.dribble();
       });
     });
   },
 
 
-  stopDribble : function(){
-    $("#ball").animate().stop();
-    $("#ball-shadow").animate().stop();
+  stopDribble : function(){    
     this.dribbleState = "off";
   },
 
   startDribble: function(){
+    this.stopDribble();    
     this.dribbleState = "on";
-    this.dribble();
+    this.dribble();    
   },
 
   freeBallFromPlayer: function(){
@@ -108,20 +102,15 @@ Ball.prototype = {
   },
   
   destroy : function(){
-    try{
-      oBall = document.getElementById('ball');
-      $(oBall).animate.stop();
-      oBall.parentNode.removeChild(oBall);
-      this.oBall = "";
+    el = document.getElementById('ball');
+    elS = document.getElementById('ball-shadow');
+    try{      
+      el.parentNode.removeChild(el);
+      elS.parentNode.removeChild(elS);
+      this.oBall = null;
+      this.oBallS = null;
     }
-    catch(e){}
-    try{
-      oBallS = document.getElementById('ball-shadow');
-      $(oBallS).animate().stop();
-      oBallS.parentNode.removeChild(oBallS);
-      this.oBallS = "";
-    }
-    catch(e){}
+    catch(e){ }
   }
   
 };

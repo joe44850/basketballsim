@@ -2,9 +2,14 @@
     position:absolute;
     z-index:10;
     height:40px;
-    width:50px;
-    border:1px solid #fff;
+    width:50px;    
     text-align:center;
+}
+
+.player-container img{
+    max-height:18px;
+    max-width:50px;
+    margin-top:-25px;
 }
 
 .player{
@@ -14,7 +19,6 @@
 .player-caption{
     position:relative;
     bottom:0px;
-    font-size:.6em;
-    color:green; 
+    font-size:.6em;   
     text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);   
 }
