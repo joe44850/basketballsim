@@ -22,3 +22,14 @@
     left:-200px;
     top:25px;
 }
+
+#debug {
+    position:absolute;
+    right:0;
+    top:50px;
+    background:#fff;
+    padding:10px;
+    font-family:Courier New, Courier, monospace;
+    font-size:.6em;
+    z-index: 1000;
+}

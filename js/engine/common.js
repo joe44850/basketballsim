@@ -15,4 +15,19 @@ function random(min,max){
   return n;
 }
 
+function debug(msg, append){
+  var el;
+  el = document.getElementById('debug');
+  if(!el){    
+    el = document.createElement('div');
+    el.id = 'debug';
+    el.innerHTML = "<i></i>";
+    document.body.append(el);
+  }
+  if(append){
+    msg = el.innerHTML+"<div>"+msg+"</div>";
+  }
+  el.innerHTML = "<div>"+msg+"</div>";
+}
+
 

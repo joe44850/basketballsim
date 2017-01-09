@@ -1,4 +1,4 @@
-var shotGrid = {
+var courtGrid = {
     0:{"id":0, "x" : 30, y: 30, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.25, "val":3, "showMake":true,    "xAdj":10, tail:0},
     1:{"id":1, "x" : 60, y: 30, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.2, "val":3, "showMake":true,     "xAdj":10, tail:0},
     2:{"id":2, "x" : 90, y: 30, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.2, "val":2, "showMake":true,     "xAdj":10, tail:0},
@@ -196,6 +196,10 @@ var position = {
     2: { "name" : "shooting guard", "abbr" : "sg", zone:3},
     3: { "name" : "power foward", "abbr" : "pf", zone:5},
     4: { "name" : "center", "abbr" : "c", zone:6}
+}
+
+var plays = {
+    0: { "name" : "motion offense"}
 }
 
 

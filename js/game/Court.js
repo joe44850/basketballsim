@@ -76,14 +76,13 @@ Court.prototype = {
         max_x = zone.x[1] - 1;
         min_y = zone.y[0] - 1;
         max_y = zone.y[1] - 1;
-        var sql = "select id from shotGrid where (x > "+min_x+" && x < "+max_x+" && y > "+min_y+" && y < "+max_y+")";
-        res = jsonsql.query(sql, shotGrid);      
+        var sql = "select id from courtGrid where (x > "+min_x+" && x < "+max_x+" && y > "+min_y+" && y < "+max_y+")";
+        res = jsonsql.query(sql, courtGrid);      
         for(var res_key in res){
           zones[key]["squares"].push(res[res_key].id);
         }
       }
-      if(this.hasRun){ resolve(true);}
-      else{ reject(false);}
+      console.log("#1 Initialize court");
       this.hasRun = true;      
     });  
     

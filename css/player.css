@@ -1,8 +1,10 @@
 .player-container{    
     position:absolute;
     z-index:10;
-    height:100px;
+    height:40px;
     width:50px;
+    border:1px solid #fff;
+    text-align:center;
 }
 
 .player{
@@ -12,5 +14,7 @@
 .player-caption{
     position:relative;
     bottom:0px;
-    font-size:.8em;
+    font-size:.6em;
+    color:green; 
+    text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);   
 }

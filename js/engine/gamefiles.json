@@ -1,6 +1,6 @@
 {
     "files": [
-        {"file": "js/engine/jquery-1.10.2.min.js", "type":"js"},
+        {"file": "js/engine/jquery-3.1.1.min.js", "type":"js"},
         {"file": "js/engine/common.js", "type" : "js"},
         {"file": "js/engine/jquery.path.js", "type":"js"},
         {"file": "js/engine/jquery.easing.1.3.js", "type" : "js"},
@@ -12,9 +12,12 @@
         {"file": "js/engine/BasketballSim.js", "type":"js"},                
         {"file": "css/style.css", "type":"css"},
         {"file": "css/court.css", "type":"css"},
+        {"file": "css/ball.css","type": "css"},
+        {"file": "css/player.css", "type": "css"},
         {"file": "js/game/Shoot.js", "type" : "js"},
         {"file": "js/game/Data.js", "type" : "js"},
-        {"file": "js/game/Team.js", "type": "js"}
+        {"file": "js/game/Team.js", "type": "js"},
+        {"file": "js/game/Play.js", "type": "js"}
     ]
 }
 

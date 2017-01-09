@@ -17,12 +17,15 @@ Match.prototype = {
       BB.cntMain.load("/views/match2.html", function(){
         BB.cntMain.css('background-image', 'url(/assets/images/misc/blank.png)');
         BB.cntMain.animate({"opacity":1}, function(){
-          return new Promise((resolve, reject)=>{
-            Court.init().then(success=>{Ball.create();}).then(success=>{Team.setPlayers();}).then(success=>{Team.finish();});
-          });
+            Court.init();            
         });          
       });      
     });
+  },
+
+  createPossession: function(){
+    Team.createPlayers().then(()=>{return Play.startPossession()});
+
   } 
 };
 
