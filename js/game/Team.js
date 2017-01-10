@@ -19,7 +19,7 @@ Team.prototype = {
           name: "Bstn Celtics",
           primaryColor:"#129C04",
           players: {
-                0: {"team":0, id: 0, "name": "Paul Grace", "position":1, "img":"/assets/images/players/team1-01.jpg", "onGrid":null, sht_pct:52, three_pct: 48},
+                0: {"team":0, id: 0, "name": "Paul Grace", "position":1, "img":"/assets/images/players/team1-01.jpg", "onGrid":null, sht_pct:22, three_pct: 18},
                 1: {"team":0, id: 1, "name": "Simon Ferris", "position": 0, "img": "/assets/images/players/team1-02.jpg", "onGrid":null, sht_pct:44, three_pct: 40},
                 2: {"team":0, id: 2, "name": "Steve Gerret", "position": 2, "img": "/assets/images/players/team1-03.jpg", "onGrid":null, sht_pct:41, three_pct: 33},
                 3: {"team":0, id: 3, "name": "Cleon Carter", "position": 4, "img": "/assets/images/players/team1-04.jpg", "onGrid":null, sht_pct:58, three_pct: 12},
@@ -32,7 +32,7 @@ Team.prototype = {
           primaryColor: "#33D1FF",
           players: {
                 0: {"team":1, id: 0, "name": "Miles Davis", "position":1, "img":"/assets/images/players/team2-01.png", "onGrid":null, sht_pct:40, three_pct: 33},
-                1: {"team":1, id: 1, "name": "Lymon Jackson", "position": 0, "img": "/assets/images/players/team2-02.png", "onGrid":null, sht_pct:52, three_pct: 50},
+                1: {"team":1, id: 1, "name": "Lymon Jackson", "position": 0, "img": "/assets/images/players/team2-02.png", "onGrid":null, sht_pct:12, three_pct: 10},
                 2: {"team":1, id: 2, "name": "Brady Gibbs", "position": 2, "img": "/assets/images/players/team2-03.png", "onGrid":null, sht_pct:32, three_pct: 18},
                 3: {"team":1, id: 3, "name": "Andrew Jones", "position": 4, "img": "/assets/images/players/team2-04.png", "onGrid":null, sht_pct:42, three_pct: 18},
                 4: {"team":1, id: 4, "name": "Kevin Wick", "position":3, "img": "/assets/images/players/team2-05.png", "onGrid":null, sht_pct:30, three_pct: 9}
@@ -108,7 +108,7 @@ Team.prototype = {
     var pos_number = player.position;   
     this.assignPlayerToGrid(player, pos_number);
     if(position[pos_number].name == "point guard"){ 
-        Play.givePlayerBall(this.players[player.id]);
+        Play.givePlayerBall(this.players[player.id], true);
         //Ball.startDribble();
     }    
     this.randomGoToSquare(player);
@@ -137,6 +137,22 @@ Team.prototype = {
       else{
           Play.playerMoves(el, pos);
       }      
+  },
+
+  getGridFromPlayer(player){
+      var oPlayer = document.getElementById("player_"+player.id);      
+      var x = ($(oPlayer).position().left);
+      var y = $(oPlayer).position().top;
+      var x_factor = Math.floor(x/30);
+      var y_factor = Math.floor((Court.floorStart-y)/30);
+      if(x_factor < 0){ x_factor = 0;}
+      if(y_factor < 0){ y_factor = 0;}
+      var hash = Court.hash[y_factor][x_factor];      
+      return courtGrid[hash];
+  },
+
+  updatePlayerSquare(player_id, grid_id){      
+      this.players[player_id].onGrid = grid_id;
   }
 
 }

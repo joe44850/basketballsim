@@ -48,10 +48,9 @@ Shoot.prototype = {
   },
 
   missShotAnimation: function(){
-    var net = "#rim-center";
-        jBall = $(Ball.oBall);
-        
-        if(this.good){ this.soundEffect = "/assets/sounds/swish1.mp3";}
+    var rim = "#rim";
+        jBall = $(Ball.oBall);        
+        this.soundEffect = "/assets/sounds/shot-miss.mp3";
         //setup collision animation:
         var hashit = false;
         var hitcount = 0;
@@ -61,9 +60,9 @@ Shoot.prototype = {
         
         arc_array = this.getShotArc();
         yTo = this.shotFromY-50;
-        xTo = arc_array['x_to'] + random(10,20);
+        xTo = arc_array['x_to']+random(2,10);
        
-        jBall.animate({"top":yTo+"px"}, function(){
+        jBall.stop(true, false).animate({"top":yTo+"px"}, function(){
           var params = {
             start:{
               x : arc_array['x_from'], 
@@ -79,6 +78,17 @@ Shoot.prototype = {
           jBall.animate({path : new $.path.bezier(params)},{            
             easing:'swing',
             duration:duration,
+            step:function(now,fx){ 
+              var collides = jBall.overlaps(rim);
+              if(collides.hits.length==1){ 
+                debug("Should rebound now", true);
+                jBall.stop();
+                var sound = new Audio();
+                sound.src = self.soundEffect;
+                sound.play();
+                return Rebound.get(self.callBack); 
+              }
+            },
             complete: function(){
               debug("Should rebound now", true);
               Rebound.get(self.callBack);                      
@@ -91,9 +101,8 @@ Shoot.prototype = {
 
   makeShotAnimation : function(){
         var net = "#rim-center";
-        jBall = $(Ball.oBall);
-        
-        if(this.good){ this.soundEffect = "/assets/sounds/swish1.mp3";}
+        jBall = $(Ball.oBall);        
+        this.soundEffect = "/assets/sounds/swish1.mp3";
         //setup collision animation:
         var hashit = false;
         var hitcount = 0;

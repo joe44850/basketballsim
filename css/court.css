@@ -23,10 +23,10 @@
     height:100%;
     max-width:748px;
     max-height:227px;
-    overflow:hidden;    
     background:url('/assets/images/backgrounds/court10.png') no-repeat center;
     z-index:1;
     margin:0 auto;
+    overflow:hidden;
 }
 
 #container-backboard{
@@ -75,6 +75,14 @@
     left:42px;
     top:54px;
     z-index:10;
+}
+
+#rim{
+    width:22px;
+    height:8px;
+    position:absolute;
+    left:35px;
+    top:50px;
 }
 
 #match_play_container{

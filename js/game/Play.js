@@ -55,12 +55,15 @@ Play.prototype = {
 
     /* this is not a pass, this is if the ref hands the player a ball,
     or during the initial team setup on offense begins */
-    givePlayerBall: function(player){         
+    givePlayerBall: function(player, dribble){ 
+        gridSquare = Team.playerSquares[player.id];       
         this.playerWithBall = player;
-        this.playerWithBallSquare = Team.playerSquares[player.id];        
+        this.playerWithBallSquare = gridSquare;        
         this.liveSquare = player.onGrid;    
         Ball.create(this.playerWithBallSquare); 
-        Ball.startDribble();               
+        if(dribble){
+            Ball.startDribble();
+        }                       
     },
 
     playerMoves: function(playerSquare, goTo, callBack){

@@ -22,7 +22,7 @@ var courtGrid = {
     20:{"id":20, "x" : 630, y: 30, "angle1":50, "angle2":320, "range1":[1.05,1.05], "range2":.2, "val":2, "showMake":true,"xAdj":-60, tail:0},
     21:{"id":21, "x" : 660, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.1], "range2":.2, "val":2, "showMake":true,  "xAdj":-63, tail:0},
     22:{"id":22, "x" : 690, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.1], "range2":.2, "val":2, "showMake":true,  "xAdj":-63, tail:0},
-    23:{"id":23, "x" : 710, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.1], "range2":.2, "val":2, "showMake":true,  "xAdj":-63, tail:0},
+    23:{"id":23, "x" : 720, y: 30, "angle1":50, "angle2":320, "range1":[1.1,1.1], "range2":.2, "val":2, "showMake":true,  "xAdj":-63, tail:0},
     24:{"id":24, "x" : 30, y: 60, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.25, "val":3, "showMake":true,   "xAdj":10, tail:0},
     25:{"id":25, "x" : 60, y: 60, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.2, "val":3, "showMake":true,    "xAdj":10, tail:0},
     26:{"id":26, "x" : 90, y: 60, "angle1":320, "angle2":75, "range1":[.8,.99], "range2":.2, "val":2, "showMake":true,    "xAdj":13, tail:0},
@@ -46,7 +46,7 @@ var courtGrid = {
     44:{"id":44, "x" : 630, y: 60, "angle1":50, "angle2":320, "range1":[1.4,1.4], "range2":.2, "val":2, "showMake":true,  "xAdj":-32, tail:0},
     45:{"id":45, "x" : 660, y: 60, "angle1":50, "angle2":320, "range1":[1.4,1.4], "range2":.2, "val":2, "showMake":true,  "xAdj":-38, tail:0},
     46:{"id":46, "x" : 690, y: 60, "angle1":50, "angle2":320, "range1":[1.3,1.3], "range2":.2, "val":2, "showMake":true,  "xAdj":-44, tail:0},
-    47:{"id":47, "x" : 710, y: 60, "angle1":50, "angle2":320, "range1":[1.25,1.25], "range2":.2, "val":2, "showMake":true,"xAdj":-50, tail:0},
+    47:{"id":47, "x" : 720, y: 60, "angle1":50, "angle2":320, "range1":[1.25,1.25], "range2":.2, "val":2, "showMake":true,"xAdj":-50, tail:0},
     48:{"id":48, "x" : 30, y: 90, "angle1":320, "angle2":75, "range1":[1.3,1.3], "range2":0, "val":3, "showMake":true,    "xAdj":6, tail:0},
     49:{"id":49, "x" : 60, y: 90, "angle1":320, "angle2":75, "range1":[1.2,1.2], "range2":0, "val":3, "showMake":true,    "xAdj":10, tail:0},
     50:{"id":50, "x" : 90, y: 90, "angle1":320, "angle2":75, "range1":[1.15,1.15], "range2":.2, "val":2, "showMake":true, "xAdj":13, tail:0},
@@ -71,7 +71,7 @@ var courtGrid = {
     68:{"id":68, "x" : 630, y: 90, "angle1":50, "angle2":320, "range1":[1.45,1.45], "range2":0, "val":2, "showMake":true, "xAdj":-26, tail:0},
     69:{"id":69, "x" : 660, y: 90, "angle1":50, "angle2":320, "range1":[1.42,1.42], "range2":0, "val":2, "showMake":true, "xAdj":-26, tail:0},
     70:{"id":70, "x" : 690, y: 90, "angle1":50, "angle2":320, "range1":[1.33,1.33], "range2":.2, "val":3, "showMake":true,"xAdj":-48, tail:0},
-    71:{"id":71, "x" : 710, y: 90, "angle1":50, "angle2":320, "range1":[1.3,1.3], "range2":.2, "val":3, "showMake":true,  "xAdj":-48, tail:0},
+    71:{"id":71, "x" : 720, y: 90, "angle1":50, "angle2":320, "range1":[1.3,1.3], "range2":.2, "val":3, "showMake":true,  "xAdj":-48, tail:0},
 
     72:{"id":72, "x" : 30, y: 120, "angle1":320, "angle2":75, "range1":[1.3,1.3], "range2":0, "val":3, "showMake":true,   "xAdj":6, tail:0},
     73:{"id":73, "x" : 60, y: 120, "angle1":320, "angle2":75, "range1":[1.3,1.3], "range2":0, "val":3, "showMake":true,   "xAdj":13.5, tail:0},
@@ -97,7 +97,7 @@ var courtGrid = {
     92:{"id":92, "x" : 630, y: 120, "angle1":50, "angle2":340, "range1":[1.45,1.45], "range2":0, "val":2, "showMake":true,"xAdj":-28, tail:0},
     93:{"id":93, "x" : 660, y: 120, "angle1":50, "angle2":340, "range1":[1.42,1.42], "range2":0, "val":2, "showMake":true,"xAdj":-29, tail:0},
     94:{"id":94, "x" : 690, y: 120, "angle1":50, "angle2":340, "range1":[1.33,1.33], "range2":0, "val":3, "showMake":true,"xAdj":-33, tail:0},
-    95:{"id":95, "x" : 710, y: 120, "angle1":50, "angle2":340, "range1":[1.3,1.3], "range2":0, "val":3, "showMake":true,  "xAdj":-33, tail:0},
+    95:{"id":95, "x" : 720, y: 120, "angle1":50, "angle2":340, "range1":[1.3,1.3], "range2":0, "val":3, "showMake":true,  "xAdj":-33, tail:0},
 
     96: {"id":96, "x" : 30, y: 150, "angle1":320, "angle2":75, "range1":[1.3,1.3],   "range2":0, "val":3, "showMake":true,"xAdj":12, tail:0},
     97: {"id":97, "x" : 60, y: 150, "angle1":320, "angle2":75, "range1":[1.35,1.35],"range2":0, "val":3, "showMake":true, "xAdj":13, tail:0},
@@ -123,7 +123,7 @@ var courtGrid = {
     116:{"id":116, "x" : 630, y: 150, "angle1":50, "angle2":320, "range1":[1.55,1.55], "range2":0, "val":2, "showMake":true, "xAdj":-30, tail:-16},
     117:{"id":117, "x" : 660, y: 150, "angle1":50, "angle2":340, "range1":[1.5,1.5], "range2":0, "val":3, "showMake":true, "xAdj":-28, tail:-20},
     118:{"id":118, "x" : 690, y: 150, "angle1":50, "angle2":340, "range1":[1.45,1.45], "range2":0, "val":3, "showMake":true, "xAdj":-29, tail:-20},
-    119:{"id":119, "x" : 710, y: 150, "angle1":50, "angle2":340, "range1":[1.43,1.43], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
+    119:{"id":119, "x" : 720, y: 150, "angle1":50, "angle2":340, "range1":[1.43,1.43], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
 
     120: {"id":120, "x" : 30, y:180, "angle1":320, "angle2":75, "range1":[1.5,1.5],   "range2":0, "val":3, "showMake":true,"xAdj":7, tail:20},
     121: {"id":121, "x" : 60, y:180, "angle1":320, "angle2":75, "range1":[1.45,1.45],"range2":0, "val":3, "showMake":true, "xAdj":10, tail:20},
@@ -149,7 +149,7 @@ var courtGrid = {
     140:{"id":140, "x" : 630, y: 180, "angle1":45, "angle2":320, "range1":[1.6,1.6], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
     141:{"id":141, "x" : 660, y: 180, "angle1":45, "angle2":340, "range1":[1.5,1.5], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
     142:{"id":142, "x" : 690, y: 180, "angle1":45, "angle2":340, "range1":[1.5,1.5], "range2":0, "val":3, "showMake":true, "xAdj":-29, tail:-20},
-    143:{"id":143, "x" : 710, y: 180, "angle1":45, "angle2":340, "range1":[1.48,1.48], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
+    143:{"id":143, "x" : 720, y: 180, "angle1":45, "angle2":340, "range1":[1.48,1.48], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
 
     144: {"id":144, "x" : 30, y:210, "angle1":320, "angle2":75, "range1":[1.5,1.5],   "range2":0, "val":3, "showMake":true,"xAdj":10, tail:20},
     145: {"id":145, "x" : 60, y:210, "angle1":320, "angle2":75, "range1":[1.45,1.45],"range2":0, "val":3, "showMake":true, "xAdj":13, tail:20},
@@ -175,7 +175,7 @@ var courtGrid = {
     164:{"id":164, "x" : 630, y: 210, "angle1":45, "angle2":320, "range1":[1.7,1.7], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
     165:{"id":165, "x" : 660, y: 210, "angle1":45, "angle2":340, "range1":[1.65,1.65], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
     166:{"id":166, "x" : 690, y: 210, "angle1":45, "angle2":340, "range1":[1.5,1.5], "range2":0, "val":3, "showMake":true, "xAdj":-31, tail:-20},
-    167:{"id":167, "x" : 710, y: 210, "angle1":45, "angle2":340, "range1":[1.5,1.5], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
+    167:{"id":167, "x" : 720, y: 210, "angle1":45, "angle2":340, "range1":[1.5,1.5], "range2":0, "val":3, "showMake":true, "xAdj":-30, tail:-20},
 }
 
 var zones = {

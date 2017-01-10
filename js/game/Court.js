@@ -10,6 +10,8 @@ Court.prototype = {
       this.jCourt = $(document.getElementById("court"));
       this.oCourt = document.getElementById("court"); 
       Scoreboard.create();
+      this.createCourtGrid();
+      this.createHash();
       return new Promise(function(resolve, reject){     
       if(this.createZoneMatrix()){
           return resolve(true);
@@ -87,6 +89,59 @@ Court.prototype = {
       this.hasRun = true;      
     });  
     
+  },
+
+  createHash : function(){
+    this.hash = new Array();
+    var rows = 7;
+    cols = 25;
+    count = 0;
+    for(var r=0; r<rows; r++){
+      this.hash[r] = new Array();
+      for(var c=0; c<cols; c++){        
+        this.hash[r][c] = count;        
+        if(count == 167){ break;}       
+        count++;        
+      }
+    }
+  },
+
+  createCourtGrid: function(){
+    oFloor = document.getElementById("floor");
+    var x = 0;
+    var y = 0;
+    index = 0;
+    /* install grid from basket, not from floor */    
+    for(var key in courtGrid){
+      var grid_item = courtGrid[key];  
+      if(index<24){
+        height = 90;
+        y = Court.floorStart;
+      }
+      else{
+        height = 30;
+        y = (Court.floorStart + grid_item.y)+30;
+      }
+      x = grid_item.x - 30;
+      var bgcolor = (bgcolor == "#ccc") ?  "#aaa" : "#ccc";
+      
+      var el = document.createElement("div");
+      el.style.position = "absolute";
+      el.style.left = x+"px";
+      el.style.top = y+"px";
+      el.style.width = "30px";
+      el.style.height = height+"px";
+      el.style.minWidth = "30px";
+      el.style.minHeight = "30px";
+      x = grid_item.x - 30;      
+      el.style.zIndex = 11; 
+      el.innerHTML = grid_item.id;     
+      el.id = "grid_"+grid_item.id;
+      el.style.visibility = "hidden";
+      el.backgroundColor = "green";
+      index++;
+      Court.oCourt.appendChild(el);     
+    }
   }
   
 };

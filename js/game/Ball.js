@@ -35,6 +35,15 @@ Ball.prototype = {
     });
   },
 
+  getPosition: function(){
+    var oBall = $(Ball.oBall);
+    var pos = new Array();
+    pos = {
+      x: oBall.position().left,
+      y: oBall.position().top
+    }    
+    return pos;
+  },
 
   stopDribble : function(){    
     this.dribbleState = "off";
@@ -53,7 +62,7 @@ Ball.prototype = {
     this.create();
   },
   
-  create : function(ballParent){
+  create : function(ballParent){    
     return new Promise(function(resolve){
       this.destroy();
       this.oBall = document.createElement("img");
@@ -72,7 +81,11 @@ Ball.prototype = {
         this.ballY = 10; 
         this.oBall.style.left="0px";
         this.oBall.style.top="10px";
-        ballParent.appendChild(this.oBall);
+        try{ ballParent.appendChild(this.oBall);}
+        catch(e){ 
+          console.log("Error: "+e);
+          console.log(ballParent);
+        }
       }
       this.createShadow(ballParent);      
       return resolve(true);
@@ -93,7 +106,8 @@ Ball.prototype = {
     this.oBallS.style.top=this.ballShadowY+"px";
     this.oBallS.id="ball-shadow";
     if(ballParent){
-      ballParent.appendChild(this.oBallS);
+      try{ ballParent.appendChild(this.oBallS);}
+      catch(e){ console.log("error with the ball parent");}
     }
     else{
       Court.oCourt.appendChild(this.oBallS);
