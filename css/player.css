@@ -4,6 +4,7 @@
     height:40px;
     width:50px;    
     text-align:center;
+    z-index:10;
 }
 
 .player-container img{
@@ -21,4 +22,29 @@
     bottom:0px;
     font-size:.6em;   
     text-shadow: 1px 1px 1px rgba(150, 150, 150, 1);   
+}
+
+.defense-player-container{    
+    position:absolute;
+    z-index:10;
+    height:40px;
+    width:50px;    
+    text-align:center;
+    z-index:10;
+}
+
+.defense-player{
+    position:relative;
+    bottom:0px;
+    font-size:.6em;  
+    color:#ccc; 
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+}
+
+.defense-player-container img{
+    max-height:18px;
+    max-width:50px;
+    margin-top:-25px;
+    opacity:.5;
+    filter: grayscale(100%);
 }

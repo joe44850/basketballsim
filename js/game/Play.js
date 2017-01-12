@@ -9,9 +9,19 @@ Play.prototype = {
 
     startPossession:function(){
         return new Promise(function(resolve){
-            Team.setPlayers().then(()=>{                
-                return resolve(true);
+            Team.setOffense().then(()=>{                
+                return Team.setDefense().then(()=>{
+                   debug("#4 Ok, defense is set");                   
+                   return resolve(true);
+                });
             });
+            /*
+            Team.setOffense().then(()=>{
+                Team.setDefense().then(()=>{
+                    return resolve(true);
+                });
+            });
+            */
         }.bind(this));
         
     },
@@ -19,10 +29,13 @@ Play.prototype = {
     dispatch: function(){
         /* decided what to do */
         var callBack = (function(val){  
-            setTimeout(()=>{
-                Team.createPlayers();
-                this.startPossession(); 
-            });      
+           
+                Team.createPlayers().then(()=>{
+                    this.startPossession();
+                    return 
+                });
+                 
+                
         }).bind(this);
         this.playerMovesAndShoots(callBack);
     },
@@ -56,7 +69,7 @@ Play.prototype = {
     /* this is not a pass, this is if the ref hands the player a ball,
     or during the initial team setup on offense begins */
     givePlayerBall: function(player, dribble){ 
-        gridSquare = Team.playerSquares[player.id];       
+        gridSquare = Players.offenseSquares[player.id];       
         this.playerWithBall = player;
         this.playerWithBallSquare = gridSquare;        
         this.liveSquare = player.onGrid;    
@@ -106,7 +119,7 @@ Play.prototype = {
         Ball.stopDribble();
         Ball.freeBallFromPlayer();
         var num = random(0,4);
-        player = Team.players[num];
+        player = Players.onOffense[num];
         squareToPassTo = Team.playerSquares[num];
         var x_to = $(squareToPassTo).position().left;
         var y_to = $(squareToPassTo).position().top;

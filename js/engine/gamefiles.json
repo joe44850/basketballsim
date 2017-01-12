@@ -19,7 +19,8 @@
         {"file": "js/game/Team.js", "type": "js"},
         {"file": "js/game/Rebound.js", "type": "js"},
         {"file": "js/game/Play.js", "type": "js"},
-        {"file": "js/game/Scoreboard.js", "type": "js"}
+        {"file": "js/game/Scoreboard.js", "type": "js"},
+        {"file": "js/game/Players.js", "type":"js"}
     ]
 }
 

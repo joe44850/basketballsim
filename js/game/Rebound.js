@@ -68,7 +68,7 @@ Rebound.prototype = {
     },
 
     playerToGetRebound(){        
-        this.rebounder = Team.players[4];
+        this.rebounder = Players.onOffense[4];
     },
 
     getReboundSquare(){
