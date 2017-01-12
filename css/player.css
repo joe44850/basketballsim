@@ -1,4 +1,4 @@
-.player-container{    
+.offense-player-container{    
     position:absolute;
     z-index:10;
     height:40px;
@@ -7,14 +7,10 @@
     z-index:10;
 }
 
-.player-container img{
-    max-height:18px;
-    max-width:50px;
-    margin-top:-25px;
-}
-
-.player{
-    
+.offense-player-container img{
+    max-height:30px;
+    max-width:30px;
+    margin-top:-15px;
 }
 
 .player-caption{
@@ -42,9 +38,9 @@
 }
 
 .defense-player-container img{
-    max-height:18px;
-    max-width:50px;
-    margin-top:-25px;
+    max-height:30px;
+    max-width:30px;
+    margin-top:-15px;
     opacity:.5;
     filter: grayscale(100%);
 }

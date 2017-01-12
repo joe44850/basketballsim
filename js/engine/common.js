@@ -30,4 +30,12 @@ function debug(msg, append){
   el.innerHTML = "<div>"+msg+"</div>";
 }
 
+ajax = function(options){
+  return new Promise(function(resolve,reject){
+    $.ajax(options)
+    .done(resolve)
+    .fail(reject)
+  });
+}
+
 

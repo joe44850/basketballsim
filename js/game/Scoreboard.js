@@ -2,32 +2,45 @@ var Scoreboard = function(){};
 
 Scoreboard.prototype = {
 
-    scoreElements : [],
+    scoreElements : [], 
+    teamNameElements: [],   
 
     create: function(){
         var el = document.createElement("div");
         el.id = "scoreboard";
         el.innerHTML = "<div id='scoreboard'>"+ 
                             "<div>"+
-                                "<span id='team1' class='team-score-name' style='color:"+Team.teams[0].primaryColor+
-                                "'>"+Team.teams[0].name+"</span>"+
-                                "<span id='teamscore_1' class='digital-score'>0</span>"+
+                                "<span id='team0' class='team-score-name'></span>"+
+                                "<span id='teamscore_0' class='digital-score'>0</span>"+
                             "</div>"+
                             "<div>"+
-                                "<span id='team2' class='team-score-name' style='color:"+Team.teams[1].primaryColor+
-                                "'>"+Team.teams[1].name+"</span>"+   
-                                "<span id='teamscore_2' class='digital-score'>0</span>"+                            
+                                "<span id='team1' class='team-score-name'></span>"+   
+                                "<span id='teamscore_1' class='digital-score'>0</span>"+                            
                             "</div>"+
                         "</div>";
         Court.oCourt.appendChild(el);
-        this.scoreElements[0] = document.getElementById('teamscore_1');
-        this.scoreElements[1] = document.getElementById('teamscore_2');        
+        this.scoreElements[0] = document.getElementById('teamscore_0');
+        this.scoreElements[1] = document.getElementById('teamscore_1'); 
+        this.teamNameElements[0] = document.getElementById('team0');
+        this.teamNameElements[1] = document.getElementById('team1');      
     },
 
     update: function(score, teamid){
         currentScore = parseInt(this.scoreElements[teamid].innerHTML);
         score += currentScore;
         this.scoreElements[teamid].innerHTML = score;
+    },
+
+    addTeams: function(){
+        return new Promise(
+            function(resolve){
+                this.teamNameElements[0].style.color = Teams.playing[0].text_color;
+                this.teamNameElements[1].style.color = Teams.playing[1].text_color;
+                this.teamNameElements[0].innerHTML = Teams.playing[0].city+" "+Teams.playing[0].name;
+                this.teamNameElements[1].innerHTML = Teams.playing[1].city+" "+Teams.playing[1].name;
+                return resolve(true);
+            }.bind(this)
+        );     
     }
 
 }

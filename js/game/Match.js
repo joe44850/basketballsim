@@ -17,15 +17,20 @@ Match.prototype = {
       BB.cntMain.load("/views/match2.html", function(){
         BB.cntMain.css('background-image', 'url(/assets/images/misc/blank.png)');
         BB.cntMain.animate({"opacity":1}, function(){
-            Court.init();            
+            Court.init();
+            Teams.load("/assets/data/1.json").
+            then(()=>{ return Teams.load("/assets/data/2.json");}).
+            then(()=>{ return Teams.setTeams(random(0,1))}).
+            then(()=>{ return Scoreboard.addTeams()}).
+            then(()=>{ return Players.createDivs()})           
         });          
       });      
     });
   },
 
   createPossession: function(){
-    Ball.destroy();
-    Team.createPlayers().then(()=>{return Play.startPossession()});
+    Ball.destroy();    T
+    //Team.createPlayers().then(()=>{return Play.startPossession()});
 
   } 
 };
