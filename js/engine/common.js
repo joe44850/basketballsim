@@ -38,4 +38,45 @@ ajax = function(options){
   });
 }
 
+jsonLoader = function(url){
+  var res;      
+      var res = ajax({
+          url:url,
+          contentType:"application/json"
+      }).then(
+          function(data){
+              return new Promise(function(resolve){ return resolve(true);});          
+          }
+      );  
+  return res;
+}
+
+getInitials = function(str, separator){
+  if(!separator){ separator = "";}
+  var str_array = str.split(" ");
+  var retval = "";
+  var reg = new RegExp(/^[a-zA-Z]/);
+  for(var i=0; i<str_array.length; i++){
+    mystring = str_array[i];
+
+    first_letter = reg.exec(mystring)[0];
+    retval+=first_letter+separator;
+  }
+  return retval;
+}
+
+inArray = function(needle, haystack){
+  try{
+    console.log("");
+    for(var i=0; i<haystack.length; i++){
+      val = haystack[i];         
+      if(needle == val){ return true;}
+    }
+  }
+  catch(e){
+    console.log(e);
+  }
+  return false;
+}
+
 

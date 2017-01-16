@@ -14,22 +14,23 @@ Match.prototype = {
   initMatch : function(){
     BB.cntMain.animate({"opacity":0}, function(){
       //animation complete:
-      BB.cntMain.load("/views/match2.html", function(){
+      BB.cntMain.load("/views/match.html", function(){
         BB.cntMain.css('background-image', 'url(/assets/images/misc/blank.png)');
         BB.cntMain.animate({"opacity":1}, function(){
             Court.init();
-            Teams.load("/assets/data/1.json").
-            then(()=>{ return Teams.load("/assets/data/2.json");}).
-            then(()=>{ return Teams.setTeams(random(0,1))}).
-            then(()=>{ return Scoreboard.addTeams()}).
-            then(()=>{ return Players.createDivs()})           
+            Teams.load("/assets/data/team-bstn-celtics.json")
+            .then(()=>{ return Teams.load("/assets/data/team-chrl-hornets.json");})            
+            .then(()=>{ return Teams.setTeams(random(0,1))})
+            .then(()=>{ return Play.loadOffensePlays()})
+            .then(()=>{ return Scoreboard.addTeams()})
+            .then(()=>{ return Players.createDivs()})
         });          
       });      
     });
   },
 
   createPossession: function(){
-    Ball.destroy();    T
+    Ball.destroy();    
     //Team.createPlayers().then(()=>{return Play.startPossession()});
 
   } 

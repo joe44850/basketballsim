@@ -1,0 +1,26 @@
+{
+  "offensive_plays" :[
+    {
+      "name":  "default",
+      "initial-player-with-ball": "point guard",
+      "players-goto-zone" : {
+        "point guard": null,
+        "small forward": null,
+        "shooting guard": null,
+        "power forward": null,
+        "center": null
+      }
+    },
+    {
+      "name": "motion offense",
+      "initial-player-with-ball": "point guard",
+      "players-goto-zone": {
+        "point guard": null,
+        "small forward": null,
+        "shooting guard": null,
+        "power forward": null,
+        "center": null
+      }
+    }
+  ]
+}

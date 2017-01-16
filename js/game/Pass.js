@@ -2,8 +2,8 @@ var Pass = function(){};
 
 Pass.prototype = {
 
-    decide: function(){
-        
+    attempt: function(player){
+        Ball.freeBallFromPlayer(player);
     }
 
 }

@@ -23,6 +23,7 @@
             "steal": 5,
             "block": 3,
             "shot_defense": 5,
+            "guard_defense":50,
             "img": "/assets/images/players/walkeke02.png",
             "onGrid": null
         },
@@ -40,6 +41,7 @@
             "steal": 5,
             "block": 3,
             "shot_defense": 5,
+            "guard_defense":65,
             "img": "/assets/images/players/batumni01.png",
             "onGrid": null
         },
@@ -57,6 +59,7 @@
             "steal": 5,
             "block": 10,
             "shot_defense": 10,
+            "guard_defense":80,
             "img": "/assets/images/players/zelleco01.png",
             "onGrid": null
         },
@@ -74,6 +77,7 @@
             "steal": 5,
             "block": 3,
             "shot_defense": 5,
+            "guard_defense":60,
             "img": "/assets/images/players/belinma01.png",
             "onGrid": null
         },
@@ -90,7 +94,8 @@
             "steal": 2,
             "block": 6,
             "shot_defense": 5,
-            "img": "/assets/images/players/johnsam01.png",
+            "guard_defense":60,
+            "img": "/assets/images/players/willima02.png",
             "onGrid": null
         },
         {
@@ -106,6 +111,7 @@
             "steal": 5,
             "block": 3,
             "shot_defense": 5,
+            "guard_defense":30,
             "img": "/assets/images/players/kaminfr01.png",
             "onGrid": null
         },
@@ -122,6 +128,7 @@
             "steal": 5,
             "block": 3,
             "shot_defense": 5,
+            "guard_defense":50,
             "img": "/assets/images/players/kiddgmi01.png",
             "onGrid": null
         }

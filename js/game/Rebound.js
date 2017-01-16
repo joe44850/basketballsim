@@ -19,7 +19,7 @@ Rebound.prototype = {
         let test = true;
         n = random(1,10);
         if(n == diceRoll1 || n == diceRoll2 || test){
-             Team.setTeamOnOffense(Team.teamOnOffense.id);
+             //Teams.setTeams(0);
              this.to = "offensive";
         }
         else{
@@ -56,8 +56,7 @@ Rebound.prototype = {
             },{
                 duration:400,
                 complete: function(){ 
-                    grid = Team.getGridFromPlayer(self.rebounder);
-                    Team.updatePlayerSquare(self.rebounder.id, grid.id);                 
+                    grid = Play.getPlayerGridSquare(self.rebounder);
                     Play.givePlayerBall(self.rebounder);
                 }
             });    
@@ -67,15 +66,21 @@ Rebound.prototype = {
         }         
     },
 
-    playerToGetRebound(){        
-        this.rebounder = Players.onOffense[4];
+    playerToGetRebound(){  
+        //console.log(Teams.onOffense.active);
+        obj = Teams.onOffense.active.filter(function(obj){
+            return obj.position == "center";
+        });  
+        this.rebounder = obj[0];
+        return obj[0];          
     },
 
     getReboundSquare(){
         var grid = this.rebounder.onGrid;
+        console.log(grid);
         var x;
         var ballPos = Ball.getPosition();        
-        if(grid > Court.floorHalf){
+        if(grid.x > Court.floorHalf){
             x = (ballPos.x - grid.x) / 2;
         }
         else{

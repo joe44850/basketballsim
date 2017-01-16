@@ -55,10 +55,12 @@ Ball.prototype = {
     this.dribble();    
   },
 
-  freeBallFromPlayer: function(){
+  freeBallFromPlayer: function(player){
+    console.log(player);
+    gridSquare = player.onGrid;
     jBall = $(Ball.oBall);
-    this.x = Play.liveSquare.x + Court.floorStartX;    
-    this.y = Play.liveSquare.y + Court.floorStart;    
+    this.x = gridSquare.x + Court.floorStartX;    
+    this.y = gridSquare.y + Court.floorStart;    
     this.create();
   },
   

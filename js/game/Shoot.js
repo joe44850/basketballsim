@@ -1,8 +1,6 @@
-var Shoot = function(square){
-  this.square = square;
-}
-
-Shoot.prototype = {
+var Shoot = function(){};
+  
+  Shoot.prototype = {
 
   showMake : true,
   soundEffect : null,
@@ -10,11 +8,12 @@ Shoot.prototype = {
   scorevalue: 0,
   player: null,
   
-  attempt : function(square, player, callBack){
+  attempt : function(player, callBack){
+      square = player.onGrid;
       this.player = player;
       this.callBack = callBack;      
       Ball.stopDribble();
-      Ball.freeBallFromPlayer();  
+      Ball.freeBallFromPlayer(player);  
       setTimeout(()=>{
         this.square = square;      
         this.net = "#rim-center";

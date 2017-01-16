@@ -11,7 +11,7 @@ Teams.prototype = {
       1: "/assets/data/2.json"
   },
   
-  load: function(teamFile){
+  load: function(teamFile){      
       var self = this;
       var res;      
       var res = ajax({
@@ -30,7 +30,6 @@ Teams.prototype = {
       return new Promise(function(resolve){
         this.onOffense = this.playing[n];
         this.onDefense = (n==1) ? this.playing[0] : this.playing[1];
-        console.log("Set teams: "+this.onOffense+" "+this.onDefense);
         return resolve(true);
       }.bind(this));
       
