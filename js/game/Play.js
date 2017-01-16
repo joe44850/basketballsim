@@ -2,12 +2,10 @@ var Play = function(){};
 
 Play.prototype = {
 
+    testing:true,
     playToRun:0,
     playerWithBall:null,
-    offensePlays: {},
-    offensePlayerSquares : [],
-    defensePlayerSquares: [],
-    offensePlayersOpen: [],
+    offensePlays: {},   
     pass_count: 1,
     _findParameter :null,
 
@@ -30,15 +28,16 @@ Play.prototype = {
        debug("Dispatch called"); 
     }, 
 
-    possessionSetup: function(){ 
-        Grid.occupied = [];
-        this.offensePlayerSquares = [];
-        this.defensePlayerSquares = [{
-            "player":null, "gridSquare":null
-        }];
-        this.getPlay();  
-        this.setupOffense();
-        this.setupDefense();        
+    possessionSetup: function(){     
+        Grid.occupied = [];        
+        Players.createDivs().then(
+            ()=>{
+                this.getPlay();  
+                this.setupOffense();
+                this.setupDefense() 
+            }
+        );       
+                     
     },
 
     /* this loop runs until the ball has been shot, stolen, or play has stopped */
@@ -50,28 +49,32 @@ Play.prototype = {
     },
 
     makePlayDecision: function(guardedBy){
-        player = this.playerWithBall;
-        player.onGrid = this.getPlayerGridSquare(player);
+        player = this.playerWithBall;        
         var shootBonus = this.pass_count * 5;
         var likelyToMove = player.move;
         var likelyToPass = player.pass;
         var likelyToShoot = 100 - likelyToPass;
         
         /* will player shoot the ball ? */
-        if(!guardedBy){ likelyToShoot+=20}
-        diceRoll = random(0, 100);
+        //if(!guardedBy){ likelyToShoot+=20}
+        diceRoll = random(90, 100);
         if(diceRoll <= likelyToShoot){
-            wait = random(10,500);
-            Ball.stopDribble();
-            setTimeout(()=>{                
+            wait = random(10,1000);            
+            setTimeout(()=>{  
+                Ball.stopDribble();
                 Shoot.attempt(player);
             },wait);            
-        }
+        } 
 
         /* will player pass the ball ? */
         diceRoll = random(0,100);
-        if(diceRoll <= likelyToPass){
-
+        if(this.testing){
+            console.log("Should pass...");
+            wait = random(10,1000);
+            setTimeout(()=>{
+                Ball.stopDribble();
+                Pass.attempt(player);
+            },wait);
         }
     },
 
@@ -83,22 +86,13 @@ Play.prototype = {
     },
 
     getGuardedBy: function(player){         
-        for(var key in this.defensePlayerSquares){
-            //console.dir(this.defensePlayerSquares[key]);
-            dGridSquareArray = this.defensePlayerSquares[key];
-            if(dGridSquareArray.gridSquare==null){ continue;}  
-            var gridSquareObject = dGridSquareArray.gridSquare;         
-            if(inArray(gridSquareObject.id, player.onGrid.guarded)){
-                return this.defensePlayerSquares[key].player;
-            }
-        }
-        return null;
+        
     },
 
     setupOffense: function(){
-        /* move players into position, start the offensive play */        
+        /* move players into position, start the offensive play */             
         for(var key in Teams.onOffense.active){
-            player = Teams.onOffense.players[key];
+            player = Teams.onOffense.active[key];
             this.setPlayerStart(player);
             var zones = this.activeOffensePlay['players-goto-zone'][player.position];
             if(this.activeOffensePlay['initial-player-with-ball'] == player.position){
@@ -106,40 +100,49 @@ Play.prototype = {
             }
             gridSquare = Grid.getZoneByPosition(player.position);
             Teams.onOffense.active[key].onGrid = gridSquare;
-            this.offensePlayerSquares.push({player:player, gridSquare:gridSquare});
+            Teams.setOffenseDivStyle(player);            
             this.playerMoves(player, gridSquare);
         }
-        console.log(Teams.onOffense.active);
+        //console.log(Teams.onOffense.active);
         //console.log(this.offensePlayerSquares);
     },
 
-    getPlayerGridSquare: function(player){
-        var _object = this.offensePlayerSquares.filter(function(obj){
-            return obj.player.id = player.id;
-        })
-        return _object[0].gridSquare;
-    },
+    updatePlayerSquare: function(player, gridSquare){
+        if(Teams.onOffense.active[player.id]){
+            Teams.onOffense.active[player.id].onGrid = gridSquare;
+        }              
+        else if(Teams.onDefense.active[player.id]){
+            Teams.onDefense.active[player.id].onGrid = gridSquare;
+        }
+    },    
 
     setupDefense: function(){
         for(var key in Teams.onDefense.active){
-            player = Teams.onDefense.players[key];
-            this.setPlayerStart(player);  
-            _findParameter = player.position;  
-            //playerToGuardGrid = this.offensePlayerSquares.find(this.getPlayerSquareByPosition);
-            var _object = this.offensePlayerSquares.filter(function(obj){                                
-                return obj.player.position == _findParameter;
+            player = Teams.onDefense.active[key];
+            this.setPlayerStart(player);             
+            _findParameter = player.position;            
+            var _object = Teams.onOffense.active.filter(function(obj){                                            
+                return obj.position === _findParameter;
             });
-            playerToGuardGrid = _object[0].gridSquare;
+            playerToGuardGrid = _object[0].onGrid;                
             gridSquare = Grid.getGuardSquare(playerToGuardGrid, player); 
-            this.defensePlayerSquares.push({player:player, gridSquare:gridSquare});           
+            Teams.setDefenseDivStyle(player);
+            Teams.onDefense.active[key].onGrid = gridSquare;
             this.playerMoves(player, gridSquare);
         }
     },
 
     setPlayerStart: function(player){
-        player_div = Players.getPlayerDiv(player);
-        player_div.style.left = random(0,700)+"px";
-        player_div.style.top = random(400, 600)+"px";
+        if(!player){return;}
+        try{
+            player_div = Players.getPlayerDiv(player);
+            player_div.style.left = random(0,700)+"px";
+            player_div.style.top = random(400, 600)+"px";
+        }
+        catch(e){
+
+        }
+        
     },
 
     getPlay: function(){
@@ -182,11 +185,7 @@ Play.prototype = {
         });
     },
 
-    getPlayerSquareByPosition: function(object, index, array){                 
-        if(object.player.position == Play.prototype._findParameter){
-            return object.gridSquare;
-        }
-    }
+    classEnd: function(){}
 
 
 }

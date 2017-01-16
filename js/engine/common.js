@@ -66,8 +66,7 @@ getInitials = function(str, separator){
 }
 
 inArray = function(needle, haystack){
-  try{
-    console.log("");
+  try{    
     for(var i=0; i<haystack.length; i++){
       val = haystack[i];         
       if(needle == val){ return true;}

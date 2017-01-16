@@ -29,15 +29,42 @@ Teams.prototype = {
   setTeams: function(n){
       return new Promise(function(resolve){
         this.onOffense = this.playing[n];
-        this.onDefense = (n==1) ? this.playing[0] : this.playing[1];
+        this.onDefense = (n==1) ? this.playing[0] : this.playing[1];       
         return resolve(true);
       }.bind(this));
       
   },
+  
+  setOffenseDivStyle: function(player){
+    if(!player){
+        for(var i=0; i<this.onOffense.active.length;i++){
+        var player = this.onOffense.active[i];
+        var el = document.getElementById('player_'+player.id);
+        el.className = "offense-player-container";
+        }
+    }
+    else{
+        var el = document.getElementById('player_'+player.id);
+        el.className = "offense-player-container";
+    }
+  },
 
-  setPlayers: function(){
+  setDefenseDivStyle: function(player){
+    if(!player){
+        for(var i=0; i<this.onDefense.active.length;i++){
+            var player = this.onDefense.active[i];
+            var el = document.getElementById('player_'+player.id);
+            el.className = "defense-player-container";
+        }
+    }
+    else{
+        var el = document.getElementById('player_'+player.id);
+        el.className = "defense-player-container";
+    }
 
-  } 
+  },
+
+  endClass: function(){}
   
 }
 

@@ -13,7 +13,7 @@ Ball.prototype = {
         
     this.rotation += 20;
     var sound = new Audio();
-    n = random(1,3);
+    n = 1;
     sound.src = "/assets/sounds/bounce-"+n+".mp3";
     currentY = oBall.position().top;  
     toY = currentY+20;        
@@ -33,6 +33,32 @@ Ball.prototype = {
           self.dribble();
       });
     });
+  },
+
+  pass: function(player, toX, toY, speed, callBack){
+    jBallS = $(Ball.OballS);
+    oBall = $(Ball.oBall);
+    self = Ball;
+    $(jBallS).animate(
+      {
+        left:toX+"px",
+        top:toY+"px"
+      },
+      {
+        duration:speed
+      });
+    $(oBall).animate(
+      {
+        left:toX+"px",
+        top:toY+"px"
+      },
+      {
+        duration:speed,
+        complete:function(){
+          Play.givePlayerBall(player);
+          if(callBack){ callBack();}
+        }
+      });
   },
 
   getPosition: function(){
@@ -56,8 +82,9 @@ Ball.prototype = {
   },
 
   freeBallFromPlayer: function(player){
-    console.log(player);
+    
     gridSquare = player.onGrid;
+
     jBall = $(Ball.oBall);
     this.x = gridSquare.x + Court.floorStartX;    
     this.y = gridSquare.y + Court.floorStart;    

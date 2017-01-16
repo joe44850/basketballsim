@@ -22,8 +22,7 @@ Match.prototype = {
             .then(()=>{ return Teams.load("/assets/data/team-chrl-hornets.json");})            
             .then(()=>{ return Teams.setTeams(random(0,1))})
             .then(()=>{ return Play.loadOffensePlays()})
-            .then(()=>{ return Scoreboard.addTeams()})
-            .then(()=>{ return Players.createDivs()})
+            .then(()=>{ return Scoreboard.addTeams()})            
         });          
       });      
     });

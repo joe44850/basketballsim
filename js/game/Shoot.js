@@ -8,12 +8,13 @@ var Shoot = function(){};
   scorevalue: 0,
   player: null,
   
-  attempt : function(player, callBack){
+  attempt : function(player, callBack){      
       square = player.onGrid;
       this.player = player;
       this.callBack = callBack;      
       Ball.stopDribble();
-      Ball.freeBallFromPlayer(player);  
+      Ball.freeBallFromPlayer(player); 
+      
       setTimeout(()=>{
         this.square = square;      
         this.net = "#rim-center";
@@ -34,7 +35,7 @@ var Shoot = function(){};
   },
 
   makeShot: function(){
-    pct = (this.square.val == 3) ? this.player.three_pct : this.player.sht_pct;
+    pct = (this.square.val == 3) ? this.player.fg3_pct : this.player.fg_pct;
     n = random(0,100);
     if(n <= pct){
       this.scorevalue = this.square.val;
@@ -79,8 +80,7 @@ var Shoot = function(){};
             duration:duration,
             step:function(now,fx){ 
               var collides = jBall.overlaps(rim);
-              if(collides.hits.length==1){ 
-                debug("Should rebound now", true);
+              if(collides.hits.length==1){                
                 jBall.stop();
                 var sound = new Audio();
                 sound.src = self.soundEffect;
@@ -89,7 +89,6 @@ var Shoot = function(){};
               }
             },
             complete: function(){
-              debug("Should rebound now", true);
               Rebound.get(self.callBack);                      
             }
           });
@@ -147,10 +146,10 @@ var Shoot = function(){};
                   var sound = new Audio();
                   sound.src = self.soundEffect;
                   sound.play();  
-                  Scoreboard.update(self.scorevalue, Team.teamOnOffense.id);
+                  Scoreboard.update(self.scorevalue, Teams.onOffense.id);
                   setTimeout(()=>{
-                    n = (Team.teamOnOffense.id != 1) ? 1 : 0;            
-                    Team.setTeamOnOffense(n); 
+                    n = (Teams.onOffense.id != 1) ? 1 : 0;            
+                    Teams.setTeams(n); 
                     if(self.callBack){
                         self.callBack();
                     }                                
@@ -165,10 +164,10 @@ var Shoot = function(){};
                   var sound = new Audio();
                   sound.src = self.soundEffect;
                   sound.play();
-                  Scoreboard.update(self.scorevalue, Team.teamOnOffense.id);
+                  Scoreboard.update(self.scorevalue, Teams.onOffense.id);
                   setTimeout(()=>{
-                    n = (Team.teamOnOffense.id != 1) ? 1 : 0;            
-                    Team.setTeamOnOffense(n);                                 
+                    n = (Teams.onOffense.id != 1) ? 1 : 0;            
+                    Teams.setTeams(n);                                 
                     self.callBack();
                   },1000);                  
                 }

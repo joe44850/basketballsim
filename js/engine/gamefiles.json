@@ -22,6 +22,7 @@
         {"file": "js/game/Scoreboard.js", "type": "js"},
         {"file": "js/game/Players.js", "type":"js"},
         {"file": "js/game/Grid.js", "type":"js"},
+        {"file": "js/game/Pass.js", "type":"js"},
         {"file": "js/game/PlayerPositions.js", "type":"js"}
     ]
 }

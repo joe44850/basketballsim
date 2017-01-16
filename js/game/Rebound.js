@@ -33,12 +33,14 @@ Rebound.prototype = {
     animate: function(){
         if(this.to == "offensive"){
             this.playerToGetRebound();
-            this.getReboundSquare();
+            this.getReboundSquare();            
             var grid = this.rebounder.onGrid;            
-            var xTo = this.getReboundSquare();
-            var ballXTo = xTo + 20;
-            var yTo = (grid.y + Court.floorStart);
-            var ballYTo = (grid.y + Court.floorStart)-30;
+            var gridTo = this.getReboundSquare();
+            Play.updatePlayerSquare(this.rebounder, gridTo);
+            var xTo = gridTo.x;
+            var ballXTo = gridTo.x + 20;
+            var yTo = (gridTo.y + Court.floorStart);
+            var ballYTo = (gridTo.y + Court.floorStart)-30;
             var player_square = "player_"+this.rebounder.id;
             var self = this;
             $("#"+player_square).animate(
@@ -47,16 +49,15 @@ Rebound.prototype = {
                     top:yTo
                 },
                 {
-                    duration:400
+                    duration:1000
                 }
             );
             $(Ball.oBall).animate({
                 left:ballXTo,
                 top:ballYTo
             },{
-                duration:400,
-                complete: function(){ 
-                    grid = Play.getPlayerGridSquare(self.rebounder);
+                duration:1000,
+                complete: function(){                    
                     Play.givePlayerBall(self.rebounder);
                 }
             });    
@@ -76,17 +77,7 @@ Rebound.prototype = {
     },
 
     getReboundSquare(){
-        var grid = this.rebounder.onGrid;
-        console.log(grid);
-        var x;
-        var ballPos = Ball.getPosition();        
-        if(grid.x > Court.floorHalf){
-            x = (ballPos.x - grid.x) / 2;
-        }
-        else{
-            x = (ballPos.x + grid.x) / 2;
-        }
-        return x;
+        return Grid.getSquareNearBasket();
     },
 
     getXTo: function(){
