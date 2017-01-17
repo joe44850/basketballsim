@@ -35,7 +35,7 @@ Ball.prototype = {
     });
   },
 
-  pass: function(player, toX, toY, speed, callBack){
+  pass: function(player, toX, toY, callBack){
     jBallS = $(Ball.OballS);
     oBall = $(Ball.oBall);
     self = Ball;
@@ -54,9 +54,13 @@ Ball.prototype = {
       },
       {
         duration:speed,
-        complete:function(){
-          Play.givePlayerBall(player);
-          if(callBack){ callBack();}
+        complete:function(){          
+          setTimeout(()=>{
+            Play.givePlayerBall(player).then(()=>{
+              if(callBack){ callBack();}
+            }
+          );            
+          },500);          
         }
       });
   },

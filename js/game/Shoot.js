@@ -15,22 +15,22 @@ var Shoot = function(){};
       Ball.stopDribble();
       Ball.freeBallFromPlayer(player); 
       
-      setTimeout(()=>{
-        this.square = square;      
-        this.net = "#rim-center";
-        this.shotFromX = $(Ball.oBall).position().left;
-        this.shotFromY = $(Ball.oBall).position().top;        
-        this.shotToX = Court.BasketCenterLeft;
-        this.shotToY = Court.BasketCenterTop;
-        this.setDistance(this.shotFromX);         
-        this.good = true;
-        if(this.makeShot()){
-          this.makeShotAnimation();
-        }
-        else{
-          this.missShotAnimation();
-        }
-      },200);     
+      
+      this.square = square;      
+      this.net = "#rim-center";
+      this.shotFromX = $(Ball.oBall).position().left;
+      this.shotFromY = $(Ball.oBall).position().top;        
+      this.shotToX = Court.BasketCenterLeft;
+      this.shotToY = Court.BasketCenterTop;
+      this.setDistance(this.shotFromX);         
+      this.good = true;
+      if(this.makeShot()){
+        this.makeShotAnimation();
+      }
+      else{
+        this.missShotAnimation();
+      }
+          
             
   },
 
@@ -85,7 +85,7 @@ var Shoot = function(){};
                 var sound = new Audio();
                 sound.src = self.soundEffect;
                 sound.play();
-                return Rebound.get(self.callBack); 
+                
               }
             },
             complete: function(){
@@ -123,7 +123,7 @@ var Shoot = function(){};
               angle : arc_array['angle2'],           
               length: arc_array['length2']}
           };             
-          jBall.animate({path : new $.path.bezier(params)},{
+          jBall.stop().animate({path : new $.path.bezier(params)},{
             step:function(now,fx){ 
               
               if(hashit===false){
@@ -150,9 +150,6 @@ var Shoot = function(){};
                   setTimeout(()=>{
                     n = (Teams.onOffense.id != 1) ? 1 : 0;            
                     Teams.setTeams(n); 
-                    if(self.callBack){
-                        self.callBack();
-                    }                                
                   },1000);
                                    
                 }
@@ -168,7 +165,6 @@ var Shoot = function(){};
                   setTimeout(()=>{
                     n = (Teams.onOffense.id != 1) ? 1 : 0;            
                     Teams.setTeams(n);                                 
-                    self.callBack();
                   },1000);                  
                 }
               }
@@ -176,8 +172,14 @@ var Shoot = function(){};
             easing:'swing',
             duration:duration,
             complete: function(){          
-              if(hashit){ Court.moveNetBack();}         
-             
+              if(hashit){ 
+                Court.moveNetBack();                
+              } 
+              setTimeout(()=>
+                  {
+                    Play.possessionSetup();
+                  },1000
+             );        
             }
           });
           //oBall.animate({"top":y+"px","left":x+"px"});

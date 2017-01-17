@@ -45,37 +45,47 @@ Play.prototype = {
        if(!playContinues){ return false;}
        guardedBy = this.getGuardedBy(this.playerWithBall);
        this.makePlayDecision(guardedBy);       
-       this.runPlayLoop(false);
+       
     },
 
     makePlayDecision: function(guardedBy){
-        player = this.playerWithBall;        
+        player = this.playerWithBall;                
         var shootBonus = this.pass_count * 5;
         var likelyToMove = player.move;
         var likelyToPass = player.pass;
-        var likelyToShoot = 100 - likelyToPass;
+        var likelyToShoot = (100 - likelyToPass)+shootBonus;
+        var decideAgain = true;
         
         /* will player shoot the ball ? */
         //if(!guardedBy){ likelyToShoot+=20}
-        diceRoll = random(90, 100);
+        diceRoll = random(100, 100);
         if(diceRoll <= likelyToShoot){
+            decideAgain = false;
             wait = random(10,1000);            
             setTimeout(()=>{  
                 Ball.stopDribble();
                 Shoot.attempt(player);
+                return;
             },wait);            
         } 
 
         /* will player pass the ball ? */
         diceRoll = random(0,100);
-        if(this.testing){
+        if(diceRoll <= player.pass+100){
+            stopDribbleRoll = random(0,10);
+            if(stopDribbleRoll >7){ Ball.stopDribble();}
+            decideAgain = false;
             console.log("Should pass...");
-            wait = random(10,1000);
+            wait = random(500,2000);
             setTimeout(()=>{
-                Ball.stopDribble();
+                Ball.stopDribble();                
                 Pass.attempt(player);
+                return;
             },wait);
         }
+
+        diceRoll = random(0,100);
+        
     },
 
     getOffensePlayersOpen: function(){
@@ -90,8 +100,15 @@ Play.prototype = {
     },
 
     setupOffense: function(){
+        var c = 0;
         /* move players into position, start the offensive play */             
         for(var key in Teams.onOffense.active){
+            callBack = null;
+            if(c==4){
+                callBack = (function(){
+                    this.runPlayLoop(true);
+                }).bind(this);
+            }
             player = Teams.onOffense.active[key];
             this.setPlayerStart(player);
             var zones = this.activeOffensePlay['players-goto-zone'][player.position];
@@ -101,7 +118,8 @@ Play.prototype = {
             gridSquare = Grid.getZoneByPosition(player.position);
             Teams.onOffense.active[key].onGrid = gridSquare;
             Teams.setOffenseDivStyle(player);            
-            this.playerMoves(player, gridSquare);
+            this.playerMoves(player, gridSquare,callBack);
+            c++;
         }
         //console.log(Teams.onOffense.active);
         //console.log(this.offensePlayerSquares);
@@ -164,12 +182,17 @@ Play.prototype = {
     }, 
 
     givePlayerBall: function(player){
-        this.playerWithBall = player;
-        Ball.create(Players.getPlayerDiv(player));
-        Ball.startDribble();
+        console.log(player);
+        return new Promise(function(resolve){
+            this.playerWithBall = player;
+            Ball.create(Players.getPlayerDiv(player));
+            Ball.startDribble();
+            return resolve(true);
+        }.bind(this));
+        
     },
 
-    playerMoves: function(player, grid_object){
+    playerMoves: function(player, grid_object, callBack){
         var gotoX = grid_object.x+"px";
         var gotoY = (Court.floorStart + grid_object.y)+"px";
         player_div = Players.getPlayerDiv(player);
@@ -180,7 +203,7 @@ Play.prototype = {
         },{
             duration:base_speed,
             complete: function(){
-
+                if(callBack){ callBack();}
             }
         });
     },

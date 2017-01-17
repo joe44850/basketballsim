@@ -56,14 +56,22 @@ Rebound.prototype = {
                 left:ballXTo,
                 top:ballYTo
             },{
-                duration:1000,
+                duration:1200,
                 complete: function(){                    
-                    Play.givePlayerBall(self.rebounder);
+                    Play.givePlayerBall(self.rebounder).then(()=>{
+                        setTimeout(()=>{
+                            Play.runPlayLoop(true);
+                        },2000);
+                    });                    
                 }
             });    
         }
         else{
-            if(this.callBack){ this.callBack();}
+            setTimeout(
+                ()=>{
+                    Play.possessionSetup();
+                },2000
+            );
         }         
     },
 
