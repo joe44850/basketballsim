@@ -8,6 +8,7 @@ Play.prototype = {
     offensePlays: {},   
     pass_count: 1,
     _findParameter :null,
+    decidedOnPlay: null,
 
     loadOffensePlays: function(){      
       var self = this;
@@ -44,55 +45,64 @@ Play.prototype = {
     runPlayLoop: function(playContinues){
        if(!playContinues){ return false;}
        guardedBy = this.getGuardedBy(this.playerWithBall);
+       this.decidedOnPlay = null;
        this.makePlayDecision(guardedBy);       
-       
     },
 
     makePlayDecision: function(guardedBy){
-        player = this.playerWithBall;                
-        var shootBonus = this.pass_count * 5;
-        var likelyToMove = player.move;
-        var likelyToPass = player.pass;
-        var likelyToShoot = (100 - likelyToPass)+shootBonus;
-        var decideAgain = true;
-        
-        /* will player shoot the ball ? */
-        //if(!guardedBy){ likelyToShoot+=20}
-        diceRoll = random(100, 100);
-        if(diceRoll <= likelyToShoot){
-            decideAgain = false;
-            wait = random(10,1000);            
-            setTimeout(()=>{  
-                Ball.stopDribble();
-                Shoot.attempt(player);
-                return;
-            },wait);            
-        } 
-
-        /* will player pass the ball ? */
-        diceRoll = random(0,100);
-        if(diceRoll <= player.pass+100){
-            stopDribbleRoll = random(0,10);
-            if(stopDribbleRoll >7){ Ball.stopDribble();}
-            decideAgain = false;
-            console.log("Should pass...");
-            wait = random(500,2000);
-            setTimeout(()=>{
-                Ball.stopDribble();                
-                Pass.attempt(player);
-                return;
-            },wait);
+        if(this.takeAShot()){
+            Shoot.attempt(this.playerWithBall);
         }
+        else if(this.makeAPass()){
 
-        diceRoll = random(0,100);
+        }   
+        else if(this.tryToGetOpen()){
+
+        }
+        else{
+
+        }
         
     },
+
+    takeAShot: function(){        
+        var diceRoll = random(0,100);
+        var likelyToShoot = 100 - this.playerWithBall.pass;
+        if(diceRoll <= likelyToShoot|| this.testing ){
+            return true;
+        }
+        return false;
+    },
+
+    makeAPass: function(){        
+        var diceRoll = random(0,100);
+        if(diceRoll <= this.playerWithBall.pass){
+            return true;
+        }
+        return false;
+    },
+
+    tryToGetOpen: function(){        
+        var diceRoll = random(0,100);
+        if(diceRoll <= this.playerWithBall.pass){
+            return true;
+        }
+        return false;
+    },    
 
     getOffensePlayersOpen: function(){
         this.offensePlayersOpen = [];
         for(var key in this.defensePlayerSquares){
 
         }
+    },
+
+    missedShotCallback: function(){
+        debug("Uh oh, MISSED!", true);
+    },
+
+    madeShotCallback: function(){
+        debug("Hey, made the shot!");
     },
 
     getGuardedBy: function(player){         

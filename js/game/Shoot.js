@@ -8,33 +8,46 @@ var Shoot = function(){};
   scorevalue: 0,
   player: null,
   
-  attempt : function(player, callBack){      
+  attempt : function(){  
+      this.init();
+      if(this.makeShot()){
+        this.makeShotAnimation().then(()=>{
+            return Play.madeShotCallback();
+        });
+      }
+      else{
+        this.missShotAnimation().then(()=>{ 
+            return Play.missedShotCallback();
+          }
+        );
+      }          
+            
+  },
+
+  init: function(){
+      player = Play.playerWithBall;
       square = player.onGrid;
       this.player = player;
       this.callBack = callBack;      
       Ball.stopDribble();
       Ball.freeBallFromPlayer(player); 
-      
-      
       this.square = square;      
       this.net = "#rim-center";
       this.shotFromX = $(Ball.oBall).position().left;
       this.shotFromY = $(Ball.oBall).position().top;        
       this.shotToX = Court.BasketCenterLeft;
       this.shotToY = Court.BasketCenterTop;
-      this.setDistance(this.shotFromX);         
-      this.good = true;
-      if(this.makeShot()){
-        this.makeShotAnimation();
-      }
-      else{
-        this.missShotAnimation();
-      }
-          
-            
+      this.setDistance(this.shotFromX);   
+  },
+
+  complete: function(){
+    return new Promise(function(resolve){
+      return resolve(true);
+    });
   },
 
   makeShot: function(){
+    return false;
     pct = (this.square.val == 3) ? this.player.fg3_pct : this.player.fg_pct;
     n = random(0,100);
     if(n <= pct){
@@ -48,21 +61,22 @@ var Shoot = function(){};
   },
 
   missShotAnimation: function(){
-    var rim = "#rim";
-        jBall = $(Ball.oBall);        
-        this.soundEffect = "/assets/sounds/shot-miss.mp3";
-        //setup collision animation:
-        var hashit = false;
-        var hitcount = 0;
-        var self = this;
-        var tail = self.square.tail;
-        var duration = (this.square.val==3) ? 2500 : 1800;
-        
-        arc_array = this.getShotArc();
-        yTo = this.shotFromY-50;
-        xTo = arc_array['x_to']+random(2,10);
-       
-        jBall.stop(true, false).animate({"top":yTo+"px"}, function(){
+      var rim = "#rim";
+      jBall = $(Ball.oBall);        
+      this.soundEffect = "/assets/sounds/shot-miss.mp3";
+      //setup collision animation:
+      var hashit = false;
+      var hitcount = 0;
+      var self = this;
+      var tail = self.square.tail;
+      var duration = (this.square.val==3) ? 2500 : 1800;
+      
+      arc_array = this.getShotArc();
+      yTo = this.shotFromY-50;
+      xTo = arc_array['x_to']+random(2,10);
+      var p = null;
+      p = (function(){
+          jBall.stop(true, false).animate({"top":yTo+"px"}, function(){
           var params = {
             start:{
               x : arc_array['x_from'], 
@@ -75,7 +89,7 @@ var Shoot = function(){};
               angle : arc_array['angle2'],           
               length: arc_array['length2']}
           };             
-          jBall.animate({path : new $.path.bezier(params)},{            
+            jBall.animate({path : new $.path.bezier(params)},{            
             easing:'swing',
             duration:duration,
             step:function(now,fx){ 
@@ -84,17 +98,16 @@ var Shoot = function(){};
                 jBall.stop();
                 var sound = new Audio();
                 sound.src = self.soundEffect;
-                sound.play();
-                
+                sound.play();                
               }
             },
             complete: function(){
-              Rebound.get(self.callBack);                      
+                return "fee";            
             }
-          });
-          //oBall.animate({"top":y+"px","left":x+"px"});
-        });
-
+          });        
+        });        
+      }());
+      console.log(p);
   },
 
   makeShotAnimation : function(){
@@ -151,7 +164,7 @@ var Shoot = function(){};
                     n = (Teams.onOffense.id != 1) ? 1 : 0;            
                     Teams.setTeams(n); 
                   },1000);
-                                   
+                  self.complete();                
                 }
                 else if(hitcount==20){
                   jBall.stop();
@@ -165,7 +178,8 @@ var Shoot = function(){};
                   setTimeout(()=>{
                     n = (Teams.onOffense.id != 1) ? 1 : 0;            
                     Teams.setTeams(n);                                 
-                  },1000);                  
+                  },1000);
+                  self.complete();                     
                 }
               }
             },
@@ -174,17 +188,12 @@ var Shoot = function(){};
             complete: function(){          
               if(hashit){ 
                 Court.moveNetBack();                
-              } 
-              setTimeout(()=>
-                  {
-                    Play.possessionSetup();
-                  },1000
-             );        
+              }  
+              self.complete();           
             }
           });
           //oBall.animate({"top":y+"px","left":x+"px"});
-        });
-     
+        });        
     },
     
     getShotArc : function(){  

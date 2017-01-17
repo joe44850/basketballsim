@@ -24,8 +24,7 @@ Pass.prototype = {
         {
             duration:speed,
             complete:function(){
-               Play.givePlayerBall(openPlayer).then(()=>{
-                   debug("Passed to "+openPlayer.name, true);
+               Play.givePlayerBall(openPlayer).then(()=>{                   
                    Play.runPlayLoop(true);
                });
             }
