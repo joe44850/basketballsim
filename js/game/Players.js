@@ -61,7 +61,14 @@ Players.prototype = {
     el = document.getElementById('player_'+player.id);    
     el.style.top = top+"px";
     el.style.left = left+"px";
-  },  
+  }, 
+
+  getPlayerByPosition: function(team, position){
+    player = team.active.filter(function(obj){
+      obj.position == position;
+    });
+    return player;
+  },
 
   getPlayerDiv: function(player){    
     try{ return document.getElementById('player_'+player.id);}

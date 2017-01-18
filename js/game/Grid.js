@@ -281,6 +281,17 @@ Grid.prototype = {
         return courtGrid[square+differential];
     },
 
+    getSquareUnderBasket: function(){
+        var near = [
+            {cells:[11,12,13]},
+            {cells:[35,36,37]}
+        ];
+        var row = random(0,2);
+        cell = random(0, near[row].cells.length-1);        
+        var grid = near[row].cells[cell];               
+        return courtGrid[grid];
+    },
+
     getSquareNearBasket: function(){
         var near = [
             {cells:[9,10,11,12,13,14,15]},

@@ -4,13 +4,18 @@ Rebound.prototype = {
 
     callBack : null,
     to: null,
+    rebounder: null,
+
+    set: function(){
+        this.whoGetsRebound();
+        this.playerToGetRebound();        
+    },
 
     get : function(callBack){ 
          this.callBack =  callBack;       
          /* 1 in 4 chances for offensive rebound */
-         this.whoGetsRebound();
-         this.animate();
-        
+         
+         this.animate();        
     },
 
     whoGetsRebound: function(){
@@ -18,13 +23,11 @@ Rebound.prototype = {
         diceRoll2 = random(6,10);
         let test = true;
         n = random(1,10);
-        if(n == diceRoll1 || n == diceRoll2 || test){
+        if(n == diceRoll1 || n == diceRoll2){
              //Teams.setTeams(0);
              this.to = "offensive";
         }
-        else{
-            n = (Team.teamOnOffense.id == 0) ? 1 : 0;
-            Team.setTeamOnOffense(n);
+        else{                       
             this.to = "defensive";
         }
         return;
@@ -77,11 +80,22 @@ Rebound.prototype = {
 
     playerToGetRebound(){  
         //console.log(Teams.onOffense.active);
-        obj = Teams.onOffense.active.filter(function(obj){
-            return obj.position == "center";
-        });  
-        this.rebounder = obj[0];
-        return obj[0];          
+        player = null;
+        position = "center";        
+        team = (this.to == "offensive") ? Teams.onOffense : Teams.onDefense;
+        for(var key in team.active){
+            player = team.active[key];
+            num = player.d_rbd;
+            diceRoll = random(1, 100);
+            if(diceRoll <= num){ position = player.position;}
+        }
+        if(!player){
+            player = team.filter(function(obj){
+                obj.position == "center";
+            });
+        } 
+        this.rebounder = player;
+        return player;          
     },
 
     getReboundSquare(){

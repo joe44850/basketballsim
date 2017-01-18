@@ -10,16 +10,13 @@ var Shoot = function(){};
   
   attempt : function(){  
       this.init();
+      Rebound.set();
+      Move.prepareForRebound(Rebound.rebounder);
       if(this.makeShot()){
-        this.makeShotAnimation().then(()=>{
-            return Play.madeShotCallback();
-        });
+        this.makeShotAnimation();
       }
       else{
-        this.missShotAnimation().then(()=>{ 
-            return Play.missedShotCallback();
-          }
-        );
+        this.missShotAnimation();
       }          
             
   },
@@ -98,16 +95,16 @@ var Shoot = function(){};
                 jBall.stop();
                 var sound = new Audio();
                 sound.src = self.soundEffect;
-                sound.play();                
+                sound.play(); 
+                Play.missedShotCallback();               
               }
             },
             complete: function(){
-                return "fee";            
+                Play.missedShotCallback();          
             }
           });        
         });        
       }());
-      console.log(p);
   },
 
   makeShotAnimation : function(){

@@ -192,7 +192,7 @@ Play.prototype = {
     }, 
 
     givePlayerBall: function(player){
-        console.log(player);
+        //console.log(player);
         return new Promise(function(resolve){
             this.playerWithBall = player;
             Ball.create(Players.getPlayerDiv(player));

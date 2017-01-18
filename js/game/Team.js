@@ -31,8 +31,7 @@ Teams.prototype = {
         this.onOffense = this.playing[n];
         this.onDefense = (n==1) ? this.playing[0] : this.playing[1];       
         return resolve(true);
-      }.bind(this));
-      
+      }.bind(this));      
   },
   
   setOffenseDivStyle: function(player){

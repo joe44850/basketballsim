@@ -23,6 +23,7 @@
         {"file": "js/game/Players.js", "type":"js"},
         {"file": "js/game/Grid.js", "type":"js"},
         {"file": "js/game/Pass.js", "type":"js"},
+        {"file": "js/game/Move.js", "type": "js"},
         {"file": "js/game/PlayerPositions.js", "type":"js"}
     ]
 }
