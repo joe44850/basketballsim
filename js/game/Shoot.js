@@ -9,8 +9,8 @@ var Shoot = function(){};
   player: null,
   
   attempt : function(){  
-      this.init();
-      Rebound.set();
+      this.init();      
+      Rebound.set();      
       Move.prepareForRebound(Rebound.rebounder);
       if(this.makeShot()){
         this.makeShotAnimation();
@@ -43,8 +43,7 @@ var Shoot = function(){};
     });
   },
 
-  makeShot: function(){
-    return false;
+  makeShot: function(){    
     pct = (this.square.val == 3) ? this.player.fg3_pct : this.player.fg_pct;
     n = random(0,100);
     if(n <= pct){
@@ -68,43 +67,47 @@ var Shoot = function(){};
       var tail = self.square.tail;
       var duration = (this.square.val==3) ? 2500 : 1800;
       
+      
       arc_array = this.getShotArc();
       yTo = this.shotFromY-50;
       xTo = arc_array['x_to']+random(2,10);
       var p = null;
-      p = (function(){
-          jBall.stop(true, false).animate({"top":yTo+"px"}, function(){
-          var params = {
-            start:{
-              x : arc_array['x_from'], 
-              y : arc_array['y_from'], 
-              angle : arc_array['angle1'], 
-              length: arc_array['length1']},
-            end:{
-              x : xTo, 
-              y : arc_array['y_to'], 
-              angle : arc_array['angle2'],           
-              length: arc_array['length2']}
-          };             
-            jBall.animate({path : new $.path.bezier(params)},{            
-            easing:'swing',
-            duration:duration,
-            step:function(now,fx){ 
-              var collides = jBall.overlaps(rim);
-              if(collides.hits.length==1){                
-                jBall.stop();
-                var sound = new Audio();
-                sound.src = self.soundEffect;
-                sound.play(); 
-                Play.missedShotCallback();               
-              }
-            },
-            complete: function(){
-                Play.missedShotCallback();          
-            }
-          });        
-        });        
-      }());
+      
+      jBall.stop(true, false).animate({"top":yTo+"px"}, function(){
+      var params = {
+        start:{
+          x : arc_array['x_from'], 
+          y : arc_array['y_from'], 
+          angle : arc_array['angle1'], 
+          length: arc_array['length1']},
+        end:{
+          x : xTo, 
+          y : arc_array['y_to'], 
+          angle : arc_array['angle2'],           
+          length: arc_array['length2']}
+      };             
+        jBall.animate({path : new $.path.bezier(params)},{            
+        easing:'swing',
+        duration:duration,
+        step:function(now,fx){ 
+          var collides = jBall.overlaps(rim);
+          if(collides.hits.length==1){          
+            var sound = new Audio();
+            sound.src = self.soundEffect;
+            sound.play();
+            jBall.stop();
+            var msg = "Rebound: "+Rebound.rebounder.name;
+            if(Rebound.to == "offensive"){ msg = "Offensive rebound "+Rebound.rebounder.name; }
+            Scoreboard.updatePlayAction(msg); 
+            Rebound.complete();               
+          }
+        },
+        complete: function(){
+            //setTimeout(()=>{Play.missedShotCallback();},500);   
+        }
+      });        
+    });        
+      
   },
 
   makeShotAnimation : function(){
@@ -157,9 +160,9 @@ var Shoot = function(){};
                   sound.src = self.soundEffect;
                   sound.play();  
                   Scoreboard.update(self.scorevalue, Teams.onOffense.id);
-                  setTimeout(()=>{
-                    n = (Teams.onOffense.id != 1) ? 1 : 0;            
-                    Teams.setTeams(n); 
+                  Scoreboard.scoreDialogue();                  
+                  setTimeout(()=>{                    
+                    Play.changePossession();
                   },1000);
                   self.complete();                
                 }
@@ -171,10 +174,10 @@ var Shoot = function(){};
                   var sound = new Audio();
                   sound.src = self.soundEffect;
                   sound.play();
-                  Scoreboard.update(self.scorevalue, Teams.onOffense.id);
-                  setTimeout(()=>{
-                    n = (Teams.onOffense.id != 1) ? 1 : 0;            
-                    Teams.setTeams(n);                                 
+                  Scoreboard.update(self.scorevalue, Teams.onOffense.id); 
+                  Scoreboard.scoreDialogue();                        
+                  setTimeout(()=>{                      
+                    Play.changePossession();                               
                   },1000);
                   self.complete();                     
                 }

@@ -5,17 +5,44 @@ Rebound.prototype = {
     callBack : null,
     to: null,
     rebounder: null,
+    reboundSquare: null,
 
     set: function(){
+        this.setReboundSquare();
         this.whoGetsRebound();
-        this.playerToGetRebound();        
+        this.playerToGetRebound();
+        this.movePlayersTowardsBasket();              
     },
 
-    get : function(callBack){ 
-         this.callBack =  callBack;       
-         /* 1 in 4 chances for offensive rebound */
-         
-         this.animate();        
+    movePlayersTowardsBasket: function(){        
+       players = Teams.onDefense.active.filter(function(obj){
+           return obj.position == "center" || obj.position == "power forward";
+       });      
+       for(var key in players){
+           if(players[key].id == this.rebounder.id){ continue;}
+           Play.playerMoves(players[key], Grid.getSquareNearBasket());
+       }
+    },
+
+    complete: function(){        
+        var player = this.rebounder;
+        if(this.to=="defensive"){            
+            callBack = (function(){
+                Play.givePlayerBall(player);
+                Play.changePossession();                
+            }).bind(this);
+        }
+        else{
+            callBack = (function(){
+                Play.givePlayerBall(player);
+                setTimeout(()=>{
+                    Play.runPlayLoop(true);
+                },250);
+            }).bind(this);
+        }         
+               
+        Ball.goToSquare(this.reboundSquare, callBack);        
+        
     },
 
     whoGetsRebound: function(){
@@ -31,52 +58,7 @@ Rebound.prototype = {
             this.to = "defensive";
         }
         return;
-    },
-
-    animate: function(){
-        if(this.to == "offensive"){
-            this.playerToGetRebound();
-            this.getReboundSquare();            
-            var grid = this.rebounder.onGrid;            
-            var gridTo = this.getReboundSquare();
-            Play.updatePlayerSquare(this.rebounder, gridTo);
-            var xTo = gridTo.x;
-            var ballXTo = gridTo.x + 20;
-            var yTo = (gridTo.y + Court.floorStart);
-            var ballYTo = (gridTo.y + Court.floorStart)-30;
-            var player_square = "player_"+this.rebounder.id;
-            var self = this;
-            $("#"+player_square).animate(
-                {
-                    left:xTo,
-                    top:yTo
-                },
-                {
-                    duration:1000
-                }
-            );
-            $(Ball.oBall).animate({
-                left:ballXTo,
-                top:ballYTo
-            },{
-                duration:1200,
-                complete: function(){                    
-                    Play.givePlayerBall(self.rebounder).then(()=>{
-                        setTimeout(()=>{
-                            Play.runPlayLoop(true);
-                        },2000);
-                    });                    
-                }
-            });    
-        }
-        else{
-            setTimeout(
-                ()=>{
-                    Play.possessionSetup();
-                },2000
-            );
-        }         
-    },
+    },    
 
     playerToGetRebound(){  
         //console.log(Teams.onOffense.active);
@@ -95,11 +77,13 @@ Rebound.prototype = {
             });
         } 
         this.rebounder = player;
+        Move.go(this.rebounder, this.reboundSquare);            
+        Play.updatePlayerSquare(this.rebounder, this.reboundSquare); 
         return player;          
     },
 
-    getReboundSquare(){
-        return Grid.getSquareNearBasket();
+    setReboundSquare(){
+        this.reboundSquare = Grid.getSquareNearBasket();
     },
 
     getXTo: function(){

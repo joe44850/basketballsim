@@ -7,7 +7,7 @@ Move.prototype = {
     this.go(player, square);
   },
 
-  go: function(player, squareToGoTo){
+  go: function(player, squareToGoTo, callBack){
     square = squareToGoTo;
     playerDiv = Players.getPlayerDiv(player);    
     y = square.y + Court.floorStart;
@@ -20,6 +20,7 @@ Move.prototype = {
       duration:750,
       complete:function(){
         Play.updatePlayerSquare(player, squareToGoTo);
+        if(callBack){ callBack();}
       }
     });
   },

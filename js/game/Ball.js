@@ -86,7 +86,7 @@ Ball.prototype = {
   },
 
   freeBallFromPlayer: function(player){
-    
+    if(!player){ player = Play.playerWithBall;}
     gridSquare = player.onGrid;
 
     jBall = $(Ball.oBall);
@@ -158,7 +158,43 @@ Ball.prototype = {
       this.oBallS = null;
     }
     catch(e){ }
-  }
+  },
+
+  throw: function(gridSquare, callBack){
+    this.freeBallFromPlayer();
+    var ballXTo = gridSquare.x;    
+    var ballYTo = (gridSquare.y + Court.floorStart);   
+    var oBall = document.getElementById("ball");       
+    $(oBall).animate({
+                left:ballXTo+"px",
+                top:ballYTo+"px"
+            },{
+                duration:500,
+                complete: function(){                    
+                    if(callBack){ callBack();}                    
+                }
+            }
+     );  
+  },
+
+  goToSquare: function(gridSquare, callBack){ 
+    this.freeBallFromPlayer();
+    var ballXTo = gridSquare.x + 20;    
+    var ballYTo = (gridSquare.y + Court.floorStart)-30;   
+    var oBall = document.getElementById("ball");       
+    $(oBall).animate({
+                left:ballXTo+"px",
+                top:ballYTo+"px"
+            },{
+                duration:500,
+                complete: function(){                    
+                    if(callBack){ callBack();}                    
+                }
+            }
+     );  
+  },
+
+  endOfObject: null
   
 };
 

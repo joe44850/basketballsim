@@ -9,6 +9,9 @@ Scoreboard.prototype = {
         var el = document.createElement("div");
         el.id = "scoreboard";
         el.innerHTML = "<div id='scoreboard'>"+ 
+                            "<div id='scoreboard-action'>"+
+                            "Info..."+
+                            "</div>"+
                             "<div>"+
                                 "<span id='team0' class='team-score-name'></span>"+
                                 "<span id='teamscore_0' class='digital-score'>0</span>"+
@@ -16,7 +19,7 @@ Scoreboard.prototype = {
                             "<div>"+
                                 "<span id='team1' class='team-score-name'></span>"+   
                                 "<span id='teamscore_1' class='digital-score'>0</span>"+                            
-                            "</div>"+
+                            "</div>"+                            
                         "</div>";
         Court.oCourt.appendChild(el);
         this.scoreElements[0] = document.getElementById('teamscore_0');
@@ -31,6 +34,18 @@ Scoreboard.prototype = {
         this.scoreElements[teamid].innerHTML = score;
     },
 
+    updatePlayAction: function(msg){
+        $("#scoreboard-action").animate({
+            opacity:0
+        },{
+            duration:250,
+            complete(){
+                $(this).html(msg);
+                $(this).animate({opacity:1}, 250);
+            }
+        });
+    },
+
     addTeams: function(){
         return new Promise(
             function(resolve){
@@ -41,7 +56,14 @@ Scoreboard.prototype = {
                 return resolve(true);
             }.bind(this)
         );     
-    }
+    },
+
+    scoreDialogue: function(){
+        msg = Play.playerWithBall.name+" "+Play.playerWithBall.onGrid.description;
+        this.updatePlayAction(msg);
+    },
+
+    dummy: null
 
 }
 

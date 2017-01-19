@@ -2,7 +2,8 @@ var Pass = function(){};
 
 Pass.prototype = {
 
-    attempt: function(player){
+    attempt: function(){
+        player = Play.playerWithBall;
         Ball.freeBallFromPlayer(player);
         openPlayer = this.openPlayer(player);
         if(typeof openPlayer === "undefined"){ 
@@ -11,24 +12,8 @@ Pass.prototype = {
                 this.attempt(player);
             },1000);            
         }
-        var speed = this.getSpeed(openPlayer);
-                
-        var xTo = openPlayer.onGrid.x+20;
-        var yTo = openPlayer.onGrid.y + Court.floorStart;        
-        //Ball.pass(openPlayer, xTo, yTo, speed, callBack);
-        var oBall = Ball.oBall;
-        $(oBall).stop().animate({
-            left:xTo+"px",
-            top:yTo+"px"
-        },
-        {
-            duration:speed,
-            complete:function(){
-               Play.givePlayerBall(openPlayer).then(()=>{                   
-                   Play.runPlayLoop(true);
-               });
-            }
-        });
+        var speed = this.getSpeed(openPlayer);                
+        Ball.goToSquare(openPlayer.onGrid);
     },
 
     openPlayer: function(playerWithBall){
