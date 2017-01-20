@@ -304,6 +304,32 @@ Grid.prototype = {
         return courtGrid[grid];
     },
 
+    getSquareOutsideLeft: function(){
+        var near = [
+            {cells:[27,28,29,30]},
+            {cells:[51,52,53,54,55]},
+            {cells:[75,76,77,78,79]},
+            {cells:[100,101,103,104]}
+        ];
+        var row = random(0,3);
+        cell = random(0, near[row].cells.length-1);        
+        var grid = near[row].cells[cell];               
+        return courtGrid[grid];
+    },
+
+    getSquareOutsideRight: function(){
+        var near = [
+            {cells:[41,42,43,44,45]},
+            {cells:[65,66,67,68,69]},
+            {cells:[89,90,91,92]},
+            {cells:[112,113,114,115]}
+        ];
+        var row = random(0,3);
+        cell = random(0, near[row].cells.length-1);        
+        var grid = near[row].cells[cell];               
+        return courtGrid[grid];
+    },
+
     endClass: function(){}
 }
 

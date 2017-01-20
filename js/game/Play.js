@@ -6,7 +6,7 @@ Play.prototype = {
     playToRun:0,
     playerWithBall:null,
     offensePlays: {},   
-    pass_count: 1,
+    pass_count: 0,
     _findParameter :null,
     decidedOnPlay: null,
 
@@ -30,6 +30,7 @@ Play.prototype = {
     }, 
 
     possessionSetup: function(){
+        this.pass_count = 0;
         Scoreboard.updatePlayAction(Teams.onOffense.name+" possession...");     
         Grid.occupied = [];        
         Players.createDivs().then(
@@ -59,83 +60,66 @@ Play.prototype = {
        this.makePlayDecision(guardedBy);       
     },
 
-    makePlayDecision: function(guardedBy){
-        if(this.takeAShot()){
-            Shoot.attempt(this.playerWithBall);
-        }
-        else if(this.makeAPass()){
-            this.executePass();
-        }   
-        else if(this.tryToGetOpen()){
-
-        }
-        else{
-            var msg = this.playerWithBall.name+" with the ball...";
-            Scoreboard.updatePlayAction(msg);
-            setTimeout(()=>{
-                this.runPlayLoop(true);
-            },1000);
-        }
+    makePlayDecision: function(guardedBy){ 
+        this.pass_count++;  
+        var playerOpen = this.isPlayerOpen(this.playerWithBall);     
+        var timeToThink;
+        if(playerOpen){ timeToThing = 200 * (random(1,5));}
+        else{ timeToThink = 250 * (random(1,8));}
         
+        setTimeout(()=>{
+            if(this.takeAShot(playerOpen)){
+            Shoot.attempt(this.playerWithBall);
+            }
+            else if(this.makeAPass()){            
+                Pass.execute();
+            }   
+            else if(this.tryToGetOpen()){
+                Move.attemptToGetOpen();
+            }
+            else{
+                
+                var msg = this.playerWithBall.name+" with the ball...";
+                Scoreboard.updatePlayAction(msg);
+                setTimeout(()=>{
+                    this.runPlayLoop(true);
+                },1000);
+            }
+        }, timeToThink);   
     },
 
-    takeAShot: function(){   
-        if(this.testing){ return false; }     
+    takeAShot: function(playerOpen){  
+        if(!this.playerWithBall.pass){ this.playerWithBall.pass = 50;} 
+        var modifier = 100 - this.playerWithBall.pass;
+        if(!playerOpen){ modifier = -30;}          
         var diceRoll = random(0,100);
-        var likelyToShoot = 100 - this.playerWithBall.pass;
+        var likelyToShoot = (this.pass_count * 5)+modifier;        
         if(diceRoll <= likelyToShoot ){
             return true;
         }
         return false;
     },
 
-    makeAPass: function(){ 
-        if(this.testing){return true;}
+    makeAPass: function(){         
         var playerToPassTo = null;       
         var diceRoll = random(0,100);
         if(diceRoll <= this.playerWithBall.pass){ return true;}        
         else return false;
     },
 
-    executePass: function(){
-        console.log("Execute pass!");
-        var playerToPassTo = null;
-        var currentPlayer = this.playerWithBall;
-        var players = Teams.onOffense.active.filter(function(obj){ return obj.id != currentPlayer.id;});
-            for(var key in players){
-                if(this.isPlayerOpen(players[key])){ 
-                    playerToPassTo = players[key];
-                    break;
-                }
-            }
-             /* if nobody is open, but the diceroll is pass, pass to somebody not open */
-            if(!playerToPassTo){                
-                var rand = random(0, (players.length-1));
-                playerToPassTo = players[rand];
-            }
-            console.log(playerToPassTo);
-            var callBack = (function(){
-                this.givePlayerBall(playerToPassTo);
-                this.runPlayLoop(false);
-            }).bind(this);
-            Ball.throw(playerToPassTo.onGrid, callBack);
-    },
-
-    isPlayerOpen: function(player){
+    isPlayerOpen: function(thisPlayer){
         for(var key in Teams.onDefense.active){
-            var defensePlayer = Teams.onDefense.active[key];
-            var isGuarded = false;
-            for(var gridKey in player.onGrid.guarded){
-                if(defensePlayer.onGrid == player.onGrid.guarded[gridKey]){ isGuarded = true;} 
+            var defensePlayer = Teams.onDefense.active[key];            
+            for(var gridKey in thisPlayer.onGrid.guarded){
+                if(defensePlayer.onGrid.id == thisPlayer.onGrid.guarded[gridKey]){ return false;} 
             }
-            if(!isGuarded){ return true;}
         }
-        return false;
+        return true;
     },
 
     tryToGetOpen: function(){        
         var diceRoll = random(0,100);
-        if(diceRoll <= this.playerWithBall.pass){
+        if(diceRoll <= this.playerWithBall.move+20){
             return true;
         }
         return false;
@@ -146,14 +130,10 @@ Play.prototype = {
         for(var key in this.defensePlayerSquares){
 
         }
-    },
+    }, 
 
-    missedShotCallback: function(){
-        debug("Uh oh, MISSED!", true);
-    },
+    movePlayerWithoutBall: function(){
 
-    madeShotCallback: function(){
-        debug("Hey, made the shot!");
     },
 
     getGuardedBy: function(player){         
@@ -179,7 +159,7 @@ Play.prototype = {
             gridSquare = Grid.getZoneByPosition(player.position);
             Teams.onOffense.active[key].onGrid = gridSquare;
             Teams.setOffenseDivStyle(player);            
-            this.playerMoves(player, gridSquare,callBack);
+            Move.go(player, gridSquare,callBack);
             c++;
         }
         //console.log(Teams.onOffense.active);
@@ -207,7 +187,7 @@ Play.prototype = {
             gridSquare = Grid.getGuardSquare(playerToGuardGrid, player); 
             Teams.setDefenseDivStyle(player);
             Teams.onDefense.active[key].onGrid = gridSquare;
-            this.playerMoves(player, gridSquare);
+            Move.go(player, gridSquare);
         }
     },
 
@@ -251,37 +231,7 @@ Play.prototype = {
             return resolve(true);
         }.bind(this));
         
-    },
-
-    playerMoves: function(player, grid_object, callBack){
-        var gotoX = grid_object.x;
-        var gotoY = (Court.floorStart + grid_object.y);
-        player_div = Players.getPlayerDiv(player);        
-        fromY = $(player_div).position().top;
-        fromX = $(player_div).position().left;
-        distanceY = Math.abs(fromY - gotoY);
-        distanceX = Math.abs(fromX - gotoX);        
-        if(distanceY>500 || distanceX>500){ speed = 3000;}
-        else if(distanceY>400 || distanceX>400){ speed = 2700;}
-        else if(distanceY>300 || distanceX>300){ speed = 2600;}
-        else if(distanceY>200 || distanceX>200){ speed = 2500;}
-        else if(distanceY>100 || distanceX>100){ speed = 1800;}
-        else if(distanceY>50 || distanceX>50){ speed = 500;}
-        else if(distanceY<50 && distanceX<50){ speed = 250;}
-        else speed = 500;        
-       
-        self = this;
-        $(player_div).animate({
-            top:gotoY+"px",
-            left:gotoX+"px"
-        },{
-            duration:speed,
-            complete: function(){
-                self.updatePlayerSquare
-                if(callBack){ callBack();}
-            }
-        });
-    },
+    },   
 
     classEnd: function(){}
 

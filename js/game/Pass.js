@@ -2,48 +2,28 @@ var Pass = function(){};
 
 Pass.prototype = {
 
-    attempt: function(){
-        player = Play.playerWithBall;
-        Ball.freeBallFromPlayer(player);
-        openPlayer = this.openPlayer(player);
-        if(typeof openPlayer === "undefined"){ 
-            debug("Undefined...");
-            setTimeout(()=>{
-                this.attempt(player);
-            },1000);            
-        }
-        var speed = this.getSpeed(openPlayer);                
-        Ball.goToSquare(openPlayer.onGrid);
-    },
-
-    openPlayer: function(playerWithBall){
-        rand = random(0,4);
-        playerOpen = null;
-        var i=0;
-        for(var key in Teams.onOffense.active){
-            if(Teams.onOffense.active[key].id == playerWithBall.id){ continue;}
-            if(rand == i){ 
-                playerOpen = Teams.onOffense.active[key];
-                break;
+    execute: function(){
+        var playerToPassTo = null;
+        var currentPlayer = Play.playerWithBall;
+        var players = Teams.onOffense.active.filter(function(obj){ return obj.id != currentPlayer.id;});
+            for(var key in players){
+                if(Play.isPlayerOpen(players[key])){ 
+                    playerToPassTo = players[key];
+                    Scoreboard.updatePlayAction("Pass to "+playerToPassTo.name+ "(open)");
+                    break;
+                }
             }
-            i++;
-        }
-        if(playerOpen==null|| typeof playerOpen === "undefined"){ 
-            this.openPlayer(playerWithBall);
-        }
-        else{ console.dir(playerOpen);return playerOpen;}
-    },
-
-    getSpeed: function(openPlayer){
-        var ball = $(Ball.oBall);
-        var xTotal = Math.abs(openPlayer.onGrid.x - ball.position().left);
-        var yTotal = Math.abs(openPlayer.onGrid.y+Court.floorStart - ball.position().top);
-        var total = xTotal + yTotal;
-        if(total < 200){ return 300;}
-        else if(total < 400){ return 400;}
-        else if(total < 600){ return 800;}
-        else return 1000;
-        
+             /* if nobody is open, but the diceroll is pass, pass to somebody not open */
+            if(!playerToPassTo){                
+                var rand = random(0, (players.length-1));
+                playerToPassTo = players[rand];
+                Scoreboard.updatePlayAction("Passing to "+playerToPassTo.name+" in traffic");
+            }
+            
+            var callBack = (function(){
+                Play.runPlayLoop(true);
+            }).bind(this);
+            Ball.throwToPlayer(playerToPassTo, callBack);
     },
 
     endDummy: function(){}

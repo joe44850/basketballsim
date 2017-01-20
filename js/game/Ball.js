@@ -160,27 +160,54 @@ Ball.prototype = {
     catch(e){ }
   },
 
-  throw: function(gridSquare, callBack){
-    this.freeBallFromPlayer();
-    var ballXTo = gridSquare.x;    
-    var ballYTo = (gridSquare.y + Court.floorStart);   
-    var oBall = document.getElementById("ball");       
-    $(oBall).animate({
-                left:ballXTo+"px",
-                top:ballYTo+"px"
-            },{
-                duration:500,
-                complete: function(){                    
-                    if(callBack){ callBack();}                    
-                }
-            }
-     );  
+  throwToPlayer: function(recievingPlayer, callBack){    
+    var gridSquare = recievingPlayer.onGrid;
+    this.stopDribble();
+    this.freeBallFromPlayer(Play.playerWithBall);
+    setTimeout(()=>{
+      var ballXTo = gridSquare.x;    
+      var ballYTo = (gridSquare.y + Court.floorStart);       
+      var oBall = this.oBall; 
+      var sBall = document.getElementById("ball-shadow"); 
+      var shadowXTo = ballXTo;
+      var shadowYTo = ballYTo;  
+      var distance = Math.abs(ballXTo - $(oBall).position().left);
+      if(distance > 500){ speed = 1200;}
+      else if(distance > 400){ speed = 1000;}
+      else if(distance > 300){ speed = 700;}
+      else if(distance > 200){ speed = 500;}
+      else if(distance > 100){ speed = 350;}
+      else if(distance < 100){ speed = 250;}
+
+      $(oBall).animate({
+                  left:ballXTo+"px",
+                  top:ballYTo+"px"
+              },{
+                  duration:speed,
+                  complete: function(){                    
+                      if(callBack){ 
+                        Play.givePlayerBall(recievingPlayer)
+                        callBack();
+                      }                    
+                  }
+              }
+      ); 
+      $(sBall).animate({
+                  left:shadowXTo+"px",
+                  top:shadowYTo+"px"
+              },{
+                  duration:speed,
+                  complete: function(){                    
+                                          
+                  }
+              }        
+      );
+    },250);
   },
 
-  goToSquare: function(gridSquare, callBack){ 
-    this.freeBallFromPlayer();
-    var ballXTo = gridSquare.x + 20;    
-    var ballYTo = (gridSquare.y + Court.floorStart)-30;   
+  goToSquare: function(gs, callBack){     
+    var ballXTo = gs.x + 20;    
+    var ballYTo = (gs.y + Court.floorStart)-30;   
     var oBall = document.getElementById("ball");       
     $(oBall).animate({
                 left:ballXTo+"px",

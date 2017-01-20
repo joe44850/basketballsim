@@ -20,7 +20,7 @@ Rebound.prototype = {
        });      
        for(var key in players){
            if(players[key].id == this.rebounder.id){ continue;}
-           Play.playerMoves(players[key], Grid.getSquareNearBasket());
+           Move.go(players[key], Grid.getSquareNearBasket());
        }
     },
 
