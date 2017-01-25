@@ -75,6 +75,23 @@ Players.prototype = {
     catch(e){}
   },
 
+  getCurrentGrid: function(player){
+    var playerDiv = this.getPlayerDiv(player);
+    var offset = $(playerDiv).offset();
+    var x = offset.left;
+    var y = offset.top;    
+    var currentGrid = getUnderDiv(x, y);
+    console.log(currentGrid);
+  },
+
+  playerIsMoving: function(player){
+    if(player.gotoGrid && 
+       player.gotoGrid.id != player.onGrid){
+         return true;
+    }
+    else return false;
+  }, 
+
   end: function(){} 
 
 }

@@ -14,6 +14,16 @@ Positions.prototype = {
         return new Promise(function(resolve){
 
         });
+    },
+
+    getPlayerByPosition(position, offOrDef){
+        let team = (offOrDef == "offense") ? Teams.onOffense : Teams.onDefense; 
+        var player = Teams.onOffense.active.filter(function(obj){                   
+            return obj.position == position;
+        });
+        return player[0];
     }
 
 }
+
+PlayerPositions = new Positions;

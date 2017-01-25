@@ -25,7 +25,8 @@
             "shot_defense": 5,
             "guard_defense":75,
             "img": "/assets/images/players/bradlav01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid":null
         },
         {
             "id": 105,
@@ -33,7 +34,7 @@
             "position" : "point guard",
             "fg_pct": 40,
             "fg3_pct": 30,
-            "pass":30,
+            "pass":70,
             "move":40,
             "speed": 75,
             "o_rbd": 3,
@@ -43,7 +44,8 @@
             "shot_defense": 5,
             "guard_defense":75,
             "img": "/assets/images/players/thomais02.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 120,
@@ -60,7 +62,8 @@
             "shot_defense": 5,
             "guard_defense":75,
             "img": "/assets/images/players/johnsam01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 125,
@@ -77,7 +80,8 @@
             "shot_defense": 45,
             "guard_defense":75,
             "img": "/assets/images/players/smartma01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },        
         {
             "id": 130,
@@ -94,7 +98,8 @@
             "shot_defense": 40,
             "guard_defense":75,
             "img": "/assets/images/players/olynyke01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 110,
@@ -112,7 +117,8 @@
             "shot_defense": 10,
             "guard_defense":75,
             "img": "/assets/images/players/horfoal01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 115,
@@ -130,7 +136,8 @@
             "shot_defense": 5,
             "guard_defense":75,
             "img": "/assets/images/players/crowdja01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         }
     ]
 

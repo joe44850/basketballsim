@@ -15,7 +15,7 @@
             "position" : "point guard",
             "fg_pct": 46,
             "fg3_pct": 42,
-            "pass":30,
+            "pass":70,
             "move":50,
             "speed":80,
             "o_rbd": 3,
@@ -25,7 +25,8 @@
             "shot_defense": 5,
             "guard_defense":50,
             "img": "/assets/images/players/walkeke02.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 205,
@@ -43,7 +44,8 @@
             "shot_defense": 5,
             "guard_defense":65,
             "img": "/assets/images/players/batumni01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 210,
@@ -61,7 +63,8 @@
             "shot_defense": 10,
             "guard_defense":80,
             "img": "/assets/images/players/zelleco01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 215,
@@ -79,7 +82,8 @@
             "shot_defense": 5,
             "guard_defense":60,
             "img": "/assets/images/players/belinma01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 220,
@@ -96,7 +100,8 @@
             "shot_defense": 5,
             "guard_defense":60,
             "img": "/assets/images/players/willima02.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 125,
@@ -113,7 +118,8 @@
             "shot_defense": 5,
             "guard_defense":30,
             "img": "/assets/images/players/kaminfr01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         },
         {
             "id": 130,
@@ -130,7 +136,8 @@
             "shot_defense": 5,
             "guard_defense":50,
             "img": "/assets/images/players/kiddgmi01.png",
-            "onGrid": null
+            "onGrid": null,
+            "gotoGrid": null
         }
     ]
 

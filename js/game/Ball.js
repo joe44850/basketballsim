@@ -6,6 +6,7 @@ Ball.prototype = {
   dribbleState: "off",
   oBall: null,
   oBallS: null,
+  isMoving: false,
 
   dribble : function(stop){  
     if(this.dribbleState == "off"){ return;}
@@ -88,10 +89,13 @@ Ball.prototype = {
   freeBallFromPlayer: function(player){
     if(!player){ player = Play.playerWithBall;}
     gridSquare = player.onGrid;
+    var playerDiv =Players.getPlayerDiv(player);
+    var x = $(playerDiv).position().left;
+    var y = $(playerDiv).position().top;
 
     jBall = $(Ball.oBall);
-    this.x = gridSquare.x + Court.floorStartX;    
-    this.y = gridSquare.y + Court.floorStart;    
+    this.x = x;    
+    this.y = y;    
     this.create();
   },
   
@@ -160,34 +164,46 @@ Ball.prototype = {
     catch(e){ }
   },
 
-  throwToPlayer: function(recievingPlayer, callBack){    
-    var gridSquare = recievingPlayer.onGrid;
+  throwToPlayer: function(receivingPlayer, callBack){   
+    var self = this; 
+    var gridSquare = receivingPlayer.onGrid;
+    // console.log(receivingPlayer.name);
+    // console.log(receivingPlayer.gotoSquare);
+    // console.log(receivingPlayer.onGrid);
+    // console.log("");
+    if(receivingPlayer.gotoSquare){      
+      gridSquare = receivingPlayer.gotoSquare;
+    }    
+    
     this.stopDribble();
     this.freeBallFromPlayer(Play.playerWithBall);
     setTimeout(()=>{
       var ballXTo = gridSquare.x;    
-      var ballYTo = (gridSquare.y + Court.floorStart);       
+      var ballYTo = gridSquare.y + Court.floorStart;       
       var oBall = this.oBall; 
       var sBall = document.getElementById("ball-shadow"); 
       var shadowXTo = ballXTo;
       var shadowYTo = ballYTo;  
       var distance = Math.abs(ballXTo - $(oBall).position().left);
-      if(distance > 500){ speed = 1200;}
-      else if(distance > 400){ speed = 1000;}
-      else if(distance > 300){ speed = 700;}
-      else if(distance > 200){ speed = 500;}
-      else if(distance > 100){ speed = 350;}
-      else if(distance < 100){ speed = 250;}
+      if(distance > 500){ speed = 1500;}
+      else if(distance > 400){ speed = 1400;}
+      else if(distance > 300){ speed = 1200;}
+      else if(distance > 200){ speed = 800;}
+      else if(distance > 100){ speed = 650;}
+      else if(distance < 100){ speed = 350;}
 
       $(oBall).animate({
                   left:ballXTo+"px",
                   top:ballYTo+"px"
               },{
                   duration:speed,
-                  complete: function(){                    
+                  step:function(now,fx){
+                    self.isMoving = true;                    
+                  },
+                  complete: function(){ 
+                    self.isMoving = false;                   
                       if(callBack){ 
-                        Play.givePlayerBall(recievingPlayer)
-                        callBack();
+                        Play.givePlayerBall(receivingPlayer, callBack)                        
                       }                    
                   }
               }

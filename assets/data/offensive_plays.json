@@ -3,24 +3,40 @@
     {
       "name":  "default",
       "initial-player-with-ball": "point guard",
-      "players-goto-zone" : {
-        "point guard": null,
-        "small forward": null,
-        "shooting guard": null,
+      "players-goto-zone" : [{
+        "point guard": "top of the key",
+        "small forward": "left corner",
+        "shooting guard": "right corner",
         "power forward": null,
-        "center": null
+        "center": "low post"
+      },
+      {
+          "small forward": "right baseline",
+          "power forward": "low post"
       }
+      ]
     },
     {
       "name": "motion offense",
-      "initial-player-with-ball": "point guard",
-      "players-goto-zone": {
-        "point guard": null,
-        "small forward": null,
-        "shooting guard": null,
-        "power forward": null,
-        "center": null
-      }
+      "initial-player-with-ball": "shooting guard",
+      "players-goto-zone": [
+        {
+          "point guard": "top of the key",
+          "small forward": "right corner",
+          "shooting guard": "right middle",
+          "power forward": "left baseline",
+          "center": "low post"
+        },
+        {
+          "small forward": "right baseline",
+          "power forward": "low post"
+        },
+        {
+          "center":"low post",
+          "point guard": "right middle",
+          "shooting guard": "left key"
+        }
+      ]
     }
   ]
 }

@@ -60,22 +60,23 @@ Play.prototype = {
        this.makePlayDecision(guardedBy);       
     },
 
-    makePlayDecision: function(guardedBy){ 
-        this.pass_count++;  
+    makePlayDecision: function(guardedBy){          
+        this.moveOffensivePlayers();
         var playerOpen = this.isPlayerOpen(this.playerWithBall);     
         var timeToThink;
-        if(playerOpen){ timeToThing = 200 * (random(1,5));}
-        else{ timeToThink = 250 * (random(1,8));}
+        if(playerOpen){ timeToThink = 50 * (random(1,5));}
+        else{ timeToThink = 250 * (random(1,8));}      
         
         setTimeout(()=>{
             if(this.takeAShot(playerOpen)){
-            Shoot.attempt(this.playerWithBall);
+                Shoot.attempt(this.playerWithBall);
             }
-            else if(this.makeAPass()){            
+            else if(this.makeAPass()){ 
+                this.pass_count++;            
                 Pass.execute();
             }   
             else if(this.tryToGetOpen()){
-                Move.attemptToGetOpen();
+                Move.attemptToGetOpen(this.playerWithBall);
             }
             else{
                 
@@ -86,6 +87,18 @@ Play.prototype = {
                 },1000);
             }
         }, timeToThink);   
+    },
+
+    moveOffensivePlayers: function(){
+        if(this.pass_count == 0){ return;}
+        var cur = this.activeOffensePlay["players-goto-zone"][this.pass_count];
+        if(cur){
+            for(var key in cur){
+                var player = PlayerPositions.getPlayerByPosition(key, "offense");
+                var gridSquare = Grid.getZoneByName(cur[key]);
+                Move.go(player, gridSquare);
+            }
+        }
     },
 
     takeAShot: function(playerOpen){  
@@ -100,7 +113,22 @@ Play.prototype = {
         return false;
     },
 
-    makeAPass: function(){         
+    makeAPass: function(){
+        if(Ball.isMoving){ return false}; 
+        var bonus = 0;
+        switch(this.pass_count){
+            case 0:
+            bonus = 25;
+            break;
+
+            case 1:
+            bonus = 10;
+            break;
+
+            default:
+            break;
+        }
+        var likelyToPass = this.playerWithBall.pass + bonus;            
         var playerToPassTo = null;       
         var diceRoll = random(0,100);
         if(diceRoll <= this.playerWithBall.pass){ return true;}        
@@ -144,6 +172,7 @@ Play.prototype = {
         var c = 0;
         /* move players into position, start the offensive play */             
         for(var key in Teams.onOffense.active){
+            var gridSqare = null;
             callBack = null;
             if(c==4){
                 callBack = (function(){
@@ -152,11 +181,16 @@ Play.prototype = {
             }
             player = Teams.onOffense.active[key];
             this.setPlayerStart(player);
-            var zones = this.activeOffensePlay['players-goto-zone'][player.position];
+            var zoneName = this.activeOffensePlay['players-goto-zone'][0][player.position];
             if(this.activeOffensePlay['initial-player-with-ball'] == player.position){
                 this.givePlayerBall(player);
             }
-            gridSquare = Grid.getZoneByPosition(player.position);
+            if(!zoneName){
+                gridSquare = Grid.getZoneByPosition(player.position);                
+            }
+            else{
+                gridSquare = Grid.getZoneByName(zoneName);                
+            }
             Teams.onOffense.active[key].onGrid = gridSquare;
             Teams.setOffenseDivStyle(player);            
             Move.go(player, gridSquare,callBack);
@@ -169,11 +203,23 @@ Play.prototype = {
     updatePlayerSquare: function(player, gridSquare){
         if(Teams.onOffense.active[player.id]){
             Teams.onOffense.active[player.id].onGrid = gridSquare;
+            Teams.onOffense.active[player.id].gotoGrid = null;
         }              
         else if(Teams.onDefense.active[player.id]){
             Teams.onDefense.active[player.id].onGrid = gridSquare;
+            Teams.onDefense.active[player.id].gotoGrid = null;
         }
-    },    
+    }, 
+
+    updatePlayerGotoSquare: function(player, gridSquare){        
+        if(Teams.onOffense.active[player.id]){
+            Teams.onOffense.active[player.id].gotoGrid = gridSquare;
+        }              
+        else if(Teams.onDefense.active[player.id]){
+            Teams.onDefense.active[player.id].gotoGrid = gridSquare;
+        }
+        
+    },   
 
     setupDefense: function(){
         for(var key in Teams.onDefense.active){
@@ -207,7 +253,7 @@ Play.prototype = {
     getPlay: function(){
         var n = this.offensePlays.length-1;
         var r = random(0, n);
-        this.activeOffensePlay = this.offensePlays[n];        
+        this.activeOffensePlay = this.offensePlays[r];        
     },
 
     getZone: function(zones){
@@ -222,12 +268,17 @@ Play.prototype = {
 
     }, 
 
-    givePlayerBall: function(player){
+    givePlayerBall: function(player, callBack){
         //console.log(player);
         return new Promise(function(resolve){
             this.playerWithBall = player;
             Ball.create(Players.getPlayerDiv(player));
             Ball.startDribble();
+            if(callBack){
+                setTimeout(()=>{
+                    callBack();
+                },200);
+            }
             return resolve(true);
         }.bind(this));
         

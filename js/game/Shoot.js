@@ -7,9 +7,14 @@ var Shoot = function(){};
   callBack: null,
   scorevalue: 0,
   player: null,
-  
-  attempt : function(){  
-      this.init();      
+  canShoot: true,
+
+  attempt : function(){ 
+
+      this.init();
+      if(!this.canShoot){
+        return false;
+      }      
       Rebound.set();      
       Move.prepareForRebound(Rebound.rebounder);
       if(this.makeShot()){
@@ -23,7 +28,9 @@ var Shoot = function(){};
 
   init: function(){
       player = Play.playerWithBall;
+      var gridSquare = Players.getCurrentGrid(player);
       square = player.onGrid;
+      if(player.gotoGrid && player.gotoGrid.id != square.id){ canShoot = false;}
       this.player = player;
       this.callBack = callBack;      
       Ball.stopDribble();
@@ -99,11 +106,15 @@ var Shoot = function(){};
             var msg = "Rebound: "+Rebound.rebounder.name;
             if(Rebound.to == "offensive"){ msg = "Offensive rebound "+Rebound.rebounder.name; }
             Scoreboard.updatePlayAction(msg); 
-            Rebound.complete();               
+            Rebound.complete(); 
+            return;              
           }
         },
         complete: function(){
-            //setTimeout(()=>{Play.missedShotCallback();},500);   
+            var msg = "Rebound: "+Rebound.rebounder.name;
+            if(Rebound.to == "offensive"){ msg = "Offensive rebound "+Rebound.rebounder.name; }
+            Scoreboard.updatePlayAction(msg); 
+            Rebound.complete();   
         }
       });        
     });        

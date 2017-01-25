@@ -8,19 +8,20 @@ Move.prototype = {
   },
 
   go: function(player, squareToGoTo, callBack){
-    var square = squareToGoTo;
+    Play.updatePlayerGotoSquare(player, squareToGoTo);
+    var square = squareToGoTo;        
     var playerDiv = Players.getPlayerDiv(player);    
     var y = square.y + Court.floorStart;
     var x = square.x;
-    var speed = this.getSpeed(player, squareToGoTo);
+    var speed = this.getSpeed(player, square);    
     $(playerDiv).animate({
       left:x+"px",
       top:y+"px"
     },
     {
       duration:speed,
-      complete:function(){
-        Play.updatePlayerSquare(player, squareToGoTo);
+      complete:function(){ 
+        Play.updatePlayerSquare(player, square);       
         if(callBack){ callBack();}
       }
     });
@@ -28,18 +29,18 @@ Move.prototype = {
 
   getSpeed: function(player, squareToGoTo){
     if(!player.speed){ player.speed = 40;}
+    player.speed = 50;
     var speed = 800;
     var [distanceX, distanceY] = this.getDistance(player, squareToGoTo);
     var slow_modifier = (100 - player.speed)*35;    
     if(distanceY>500 || distanceX>500){ speed = 2000;}
-    else if(distanceY>400 || distanceX>400){ speed = 1500;}
-    else if(distanceY>300 || distanceX>300){ speed = 1200;}
-    else if(distanceY>200 || distanceX>200){ speed = 1000;}
-    else if(distanceY>100 || distanceX>100){ speed = 500;}
-    else if(distanceY>50 || distanceX>50){ speed = 200;}
-    else if(distanceY<50 && distanceX<50){ speed = 100;}    
+    else if(distanceY>400 || distanceX>400){ speed = 2000;}
+    else if(distanceY>300 || distanceX>300){ speed = 1400;}
+    else if(distanceY>200 || distanceX>200){ speed = 1200;}
+    else if(distanceY>100 || distanceX>100){ speed = 500; slow_modifier=500;}
+    else if(distanceY>50 || distanceX>50){ speed = 200; slow_modifier=500;}
+    else if(distanceY<50 && distanceX<50){ speed = 100; slow_modifier=500;}    
     speed+=slow_modifier;
-    console.log(speed);
     return speed;
   },
 
@@ -54,8 +55,9 @@ Move.prototype = {
         return [distanceX,distanceY];
   },
 
-  attemptToGetOpen: function(){
-    var goToGrid = Grid.getZoneByPosition(Play.playerWithBall.position);
+  attemptToGetOpen: function(player){
+    var curSquare = player.onGrid;
+    var goToGrid = Grid.getSquareInSector(curSquare);
     var callBack = (function(){
       Play.runPlayLoop(true);
     }).bind(this);
