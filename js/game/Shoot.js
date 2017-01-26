@@ -7,30 +7,33 @@ var Shoot = function(){};
   callBack: null,
   scorevalue: 0,
   player: null,
-  canShoot: true,
+  intrpt:null,
 
   attempt : function(){ 
-
-      this.init();
-      if(!this.canShoot){
-        return false;
-      }      
-      Rebound.set();      
-      Move.prepareForRebound(Rebound.rebounder);
-      if(this.makeShot()){
-        this.makeShotAnimation();
+      if(!this.canShoot()){ 
+        setTimeout(()=>{
+          this.attempt();
+        },25);
       }
       else{
-        this.missShotAnimation();
-      }          
-            
+        this.init();
+        Rebound.set();      
+        Move.prepareForRebound(Rebound.rebounder);
+        if(this.makeShot()){
+          this.makeShotAnimation();
+        }
+        else{
+          this.missShotAnimation();
+        }    
+      }
   },
 
   init: function(){
-      player = Play.playerWithBall;
+      Play.interrupt = null;
+      var player_id = Play.playerWithBall.id;
+      var player = Teams.onOffense.active[player_id];
       var gridSquare = Players.getCurrentGrid(player);
-      square = player.onGrid;
-      if(player.gotoGrid && player.gotoGrid.id != square.id){ canShoot = false;}
+      square = player.onGrid;      
       this.player = player;
       this.callBack = callBack;      
       Ball.stopDribble();
@@ -44,16 +47,29 @@ var Shoot = function(){};
       this.setDistance(this.shotFromX);   
   },
 
+  canShoot: function(){
+    var player_id = Play.playerWithBall.id;
+    var player = Teams.onOffense.active[player_id];
+    var gridSquare = Players.getCurrentGrid(player);
+    square = player.onGrid;
+    if(player.gotoGrid && player.gotoGrid.id != square.id){ 
+        return false;
+    }
+    return true;
+  },
+
   complete: function(){
     return new Promise(function(resolve){
       return resolve(true);
     });
   },
 
-  makeShot: function(){    
-    pct = (this.square.val == 3) ? this.player.fg3_pct : this.player.fg_pct;
+  makeShot: function(){   
+    var bonus = (Play.playerWithBall.shootingBonus) || 0; 
+    pct = ((this.square.val == 3) ? this.player.fg3_pct : this.player.fg_pct);
     n = random(0,100);
-    if(n <= pct){
+   // debug("N: "+n+" Pct:"+pct+" Bonus: "+bonus, true);
+    if(n <= pct+bonus){
       this.scorevalue = this.square.val;
       return true;
     }

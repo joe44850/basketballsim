@@ -283,6 +283,7 @@ Grid.prototype = {
     
     getGuardSquare: function(gridSquare, player){        
         differential = 0;
+        var squareToGoTo = null;
         var n = random(0, 100); 
         if(n > player.guard_defense){
             differential = random(1,3);
@@ -294,18 +295,30 @@ Grid.prototype = {
         }
         square = guarded_array[seed]; 
         if(square > 167){ square = 167};
-        if(square < 0){ square = 0;}      
-        return courtGrid[square+differential];
+        if(square < 0){ square = 0;}   
+        var zoneSector = zoneSectors[gridSquare.sector-1];
+        if(zoneSector.side == "left"){
+            squareToGoTo = courtGrid[square+differential];
+        } 
+        else if(zoneSector.side == "right"){
+            squareToGoTo = courtGrid[square-differential];
+        }  
+        else squareToGoTo = courtGrid[square];
+        //console.log(squareToGoTo);
+        return squareToGoTo;
     },
 
     getSquareInSector: function(gridSquare){
         var goToSquare;
+        var failsafe = 0;
         while(true){
             diceRoll = random(0,166);
             if(courtGrid[diceRoll].sector == gridSquare.sector){
                 goToSquare = courtGrid[diceRoll];
                 break;
             }
+            failsafe++;
+            if(failsafe == 166){break;}
         }
         return goToSquare;
     },

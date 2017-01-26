@@ -81,7 +81,7 @@ Players.prototype = {
     var x = offset.left;
     var y = offset.top;    
     var currentGrid = getUnderDiv(x, y);
-    console.log(currentGrid);
+    //console.log(currentGrid);
   },
 
   playerIsMoving: function(player){

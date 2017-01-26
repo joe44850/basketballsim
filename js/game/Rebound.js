@@ -40,7 +40,7 @@ Rebound.prototype = {
                 },250);
             }).bind(this);
         }         
-               
+        //console.log(player);     
         Ball.goToSquare(this.reboundSquare, callBack);        
         
     },
@@ -77,7 +77,9 @@ Rebound.prototype = {
             });
         } 
         this.rebounder = player;
-        Move.go(this.rebounder, this.reboundSquare);            
+        if(this.rebounder != Shoot.player){
+            Move.go(this.rebounder, this.reboundSquare);            
+        }
         Play.updatePlayerSquare(this.rebounder, this.reboundSquare); 
         return player;          
     },

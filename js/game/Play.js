@@ -9,6 +9,7 @@ Play.prototype = {
     pass_count: 0,
     _findParameter :null,
     decidedOnPlay: null,
+    interrupt:null,
 
     loadOffensePlays: function(){      
       var self = this;
@@ -53,19 +54,22 @@ Play.prototype = {
     },
 
     /* this loop runs until the ball has been shot, stolen, or play has stopped */
-    runPlayLoop: function(playContinues){        
+    runPlayLoop: function(playContinues){  
        if(!playContinues){ return false;}
        guardedBy = this.getGuardedBy(this.playerWithBall);
        this.decidedOnPlay = null;
        this.makePlayDecision(guardedBy);       
     },
 
-    makePlayDecision: function(guardedBy){          
+    makePlayDecision: function(guardedBy){   
+        debug(this.interrupt);       
         this.moveOffensivePlayers();
         var playerOpen = this.isPlayerOpen(this.playerWithBall);     
         var timeToThink;
         if(playerOpen){ timeToThink = 50 * (random(1,5));}
-        else{ timeToThink = 250 * (random(1,8));}      
+        else{ timeToThink = 250 * (random(1,8));} 
+        if(this.interrupt){ timeToThink = 10;}
+        Move.attemptToGuardPlayer(this.playerWithBall);     
         
         setTimeout(()=>{
             if(this.takeAShot(playerOpen)){
@@ -76,7 +80,7 @@ Play.prototype = {
                 Pass.execute();
             }   
             else if(this.tryToGetOpen()){
-                Move.attemptToGetOpen(this.playerWithBall);
+                Move.attemptToGetOpen(this.playerWithBall, guardedBy);
             }
             else{
                 
@@ -102,11 +106,23 @@ Play.prototype = {
     },
 
     takeAShot: function(playerOpen){  
+        this.playerWithBall.shootingBonus = 0;
         if(!this.playerWithBall.pass){ this.playerWithBall.pass = 50;} 
         var modifier = 100 - this.playerWithBall.pass;
         if(!playerOpen){ modifier = -30;}          
         var diceRoll = random(0,100);
-        var likelyToShoot = (this.pass_count * 5)+modifier;        
+        if(this.playerWithBall.hotzones){
+            for(var key in this.playerWithBall.hotzones){
+                if(this.playerWithBall.hotzones[key] == this.playerWithBall.onGrid.sector){
+                    console.log("player likes this area!");
+                    modifier+=15;
+                    this.playerWithBall.shootingBonus = 15;
+                }
+            }
+        }   
+        if(this.interrupt=="shoot"){ return true;}
+
+        var likelyToShoot = (this.pass_count * 5)+modifier;            
         if(diceRoll <= likelyToShoot ){
             return true;
         }
@@ -145,7 +161,8 @@ Play.prototype = {
         return true;
     },
 
-    tryToGetOpen: function(){        
+    tryToGetOpen: function(isOpen){ 
+        if(isOpen){ return false;}       
         var diceRoll = random(0,100);
         if(diceRoll <= this.playerWithBall.move+20){
             return true;
@@ -282,7 +299,11 @@ Play.prototype = {
             return resolve(true);
         }.bind(this));
         
-    },   
+    },  
+
+    setInterrupt(cmd){
+        this.interrupt = cmd;
+    },
 
     classEnd: function(){}
 

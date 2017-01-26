@@ -97,7 +97,7 @@ getUnderDiv = function(x, y){
       let retval = []; 
       for(let i=0; i<elements.length; i++){          
           let el = elements[i];
-          console.log(el.id);
+          //console.log(el.id);
           retval.push(el);          
       }  
       //console.dir(retval);     

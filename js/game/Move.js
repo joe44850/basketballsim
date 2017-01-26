@@ -56,12 +56,28 @@ Move.prototype = {
   },
 
   attemptToGetOpen: function(player){
-    var curSquare = player.onGrid;
-    var goToGrid = Grid.getSquareInSector(curSquare);
+    var goToGrid = Grid.getSquareInSector(player.onGrid);
     var callBack = (function(){
       Play.runPlayLoop(true);
     }).bind(this);
     this.go(Play.playerWithBall, goToGrid, callBack);
+    this.attemptToGuardPlayer(player);
+  },
+
+  attemptToGuardPlayer(playerToGuard){
+    var guardedBy = PlayerPositions.getPlayerByPosition(playerToGuard.position, "defense");
+    var goToGrid = (playerToGuard.gotoGrid) || playerToGuard.onGrid;
+    var squareToGoTo = Grid.getGuardSquare(goToGrid, guardedBy);
+    // console.log("goto grid: "+goToGrid);
+    var delay = 0;
+    var playerSpeed = (player.speed) || 50;
+    var guardedBySpeed = (guardedBy.speed) || 50;
+    if(playerSpeed > guardedBySpeed){
+      delay = 0;
+    }
+    setTimeout(()=>{
+      Move.go(guardedBy, squareToGoTo);
+    },delay);
   },
 
   endDummy: function(){}
